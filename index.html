@@ -89,10 +89,26 @@
             
             <div id="dim-container" class="grid grid-cols-2 gap-x-6 gap-y-2 text-left text-[9px] uppercase font-bold tracking-widest text-on-surface/50 border-t border-dashed border-primary/20 pt-6"></div>
 
-            <button onclick="location.reload()" class="mt-10 px-8 py-3 bg-primary text-white rounded-full font-headline font-bold text-sm shadow-lg shadow-primary/10 active:scale-95 transition-all">
-                重新探索
-            </button>
+            <div class="mt-10 flex flex-col gap-3">
+                <button onclick="location.reload()" class="w-full px-8 py-3 bg-primary text-white rounded-full font-headline font-bold text-sm shadow-lg shadow-primary/10 active:scale-95 transition-all">
+                    重新探索
+                </button>
+                <button onclick="showAllTypes()" class="w-full px-8 py-3 bg-surface-container/60 text-primary hover:bg-surface-container rounded-full font-headline font-bold text-sm active:scale-95 transition-all shadow-sm">
+                    查看所有人格类型
+                </button>
+            </div>
         </div>
+    </main>
+
+    <main id="screen-all-types" class="screen h-screen w-screen flex-col items-center justify-start px-6 overflow-y-auto pb-20 pt-10">
+        <div class="w-full max-w-lg flex justify-between items-center mb-6 mt-4">
+            <button onclick="hideAllTypes()" class="flex items-center text-on-surface/50 hover:text-primary transition-all">
+                <span class="material-symbols-outlined" style="font-size: 18px;">arrow_back_ios_new</span>
+                <span class="font-bold ml-1 text-sm">返回</span>
+            </button>
+            <span class="text-sm font-bold text-primary tracking-widest uppercase">全图鉴</span>
+            <div class="w-12"></div> </div>
+        <div id="all-types-container" class="w-full max-w-lg space-y-4"></div>
     </main>
 
     <script>
@@ -150,8 +166,7 @@
             ]},
             { text: "点开好分数刚好刷出成绩，你是？", options: [
                 { text: "偷偷搞到身边朋友的成绩", delta: { R:-1.0 } },
-                { text: "我草我简直太牛逼了", delta: { AR: 1.5, ES: 0.5 } },
-                { text: "虽然考得很好但是大喊寄了寄了这次真寄了", delta: { S: 0.5 , AR: 0.5, R: -0.5 } },
+                { text: "我草我简直太牛逼了", delta: { AR: 1.5, ES: 1.0 } },
                 { text: "对身边的朋友说：考这么高！别学了奆神", delta: { S: 0.5, R: -0.5 } },
                 { text: "乖乖的改错复盘答疑", delta: { AC: 1.0 } },
                 { text: "成绩算啥 我鸟都不鸟", delta:{ AR:-1.0, AC:-1.0, R:-1.0} },
@@ -172,6 +187,7 @@
             ]},
             { text: "方圆星选课博弈，你的策略是？", options: [
                 { text: "梭哈最热门课，全凭直觉", delta: { L: 0.5, CM: -1.5 } },
+                { text: "抄学霸的选课单", delta: { S: 1.0, CM: 0.5 } },
                 { text: "黑箱博弈不打整数，把50改成52……", delta: { CM: 2.0, L: -1.0 } },
                 { text: "听天由命，随手一投，结果全中", delta: { L: 2.0, CM: -0.5 } },
                 { text: "精打细算，这把稳了，结果中了0门", delta: { L: -1.0 } },
@@ -277,8 +293,7 @@
             { name: "情圣", tag: "人见人爱 花见花开 车见……", desc: "“高中就是用来谈恋爱的！不谈恋爱算我亏了。”", dims: { AR:2.5, AC:2.5, S:4, R:2.5, Cr:3.5, ES:3, L:2.5, CM:2.5, Ch:5, Ath:2.5 } },
             { name: "狛枝凪斗", tag: "超高校级的幸运", desc: '方圆星博弈大赢家，各路抽奖一击必中。\n"人生，真是易如反掌啊。"', dims: { AR:2.5, AC:2.5, S:3, R:2.5, Cr:2.5, ES:3.5, L:5, CM:3, Ch:3, Ath:2.5 } },
             
-
-            { name: "电竞选手", tag: "峡谷战神 专注上分", desc: "两耳不闻窗外事，一心只求 Penta Kill。\n“老师来了老师来了...” “等会，要五杀了！”", dims: { AR:1.0, AC:0.5, S:2.5, R:0.5, Cr:3.0, ES:3.0, L:3.0, CM:1.0, Ch:2.0, Ath:2.0 } },
+            { name: "电竞选手", tag: "峡谷战神 专注上分", desc: '两耳不闻窗外事，一心只求 Penta Kill。\n"老师来了老师来了...” “等会，要五杀了！”', dims: { AR:1.0, AC:0.5, S:2.5, R:0.5, Cr:3.0, ES:3.0, L:3.0, CM:1.0, Ch:2.0, Ath:2.0 } },
             
             { name: "小迷糊", tag: "混乱秩序 纯真", desc: "不是在丢卡就是在去补办卡的路上，不过稀里糊涂地过也挺爽的嘛。\n“我去，昨天这科留作业了？”", dims: { AR:2.5, AC:2.5, S:3, R:2.5, Cr:2.5, ES:2.5, L:2.5, CM:0.5, Ch:3, Ath:2.5 } },
             { name: "年级主任", tag: "行走的正道之光", desc: "永远遵规守纪，一直想劝导同学学习，莫非你是混入的年级主任？", dims: { AR:3.5, AC:3.5, S:2.5, R:5, Cr:2.5, ES:4.5, L:2.5, CM:4, Ch:2, Ath:2.5 } },
@@ -298,7 +313,7 @@
             emperor1: false, emperor2: false, emperor3: false,
             sleep1: false, sleep2: false,
             daba1: false, daba2: false, daba3: false, daba4: false,
-            esport1: false, esport2: false, esport3: false 
+            esport1: false, esport2: false, esport3: false
         };
         let historyStack = [];
 
@@ -445,6 +460,41 @@
                     </div>`;
                 }
             }
+        }
+
+        // 新增展示图鉴功能
+        function showAllTypes() {
+            switchScreen('screen-all-types');
+            renderAllTypes();
+        }
+
+        function hideAllTypes() {
+            switchScreen('screen-result');
+        }
+
+        function renderAllTypes() {
+            const container = document.getElementById('all-types-container');
+            container.innerHTML = '';
+            
+            // 过滤掉"入侵者"
+            let displayList = personalities.filter(p => p.name !== "入侵者");
+            // 手动加入"龙娃"兜底人格进行展示
+            displayList.push({
+                name: "龙娃",
+                tag: "健全立体的天选BNDSer",
+                desc: "每个人格都沾点，你是 +-TI 逻辑中那个最平衡、最独特的灵魂。"
+            });
+
+            displayList.forEach(p => {
+                const card = document.createElement('div');
+                card.className = "glass-bubble p-6 rounded-[1.5rem] text-left shadow-sm";
+                card.innerHTML = `
+                    <h3 class="text-xl font-headline font-black text-on-surface mb-1">${p.name}</h3>
+                    <p class="text-xs font-body font-bold text-primary/70 mb-3">${p.tag}</p>
+                    <p class="whitespace-pre-line text-sm text-on-surface-variant leading-relaxed">${p.desc}</p>
+                `;
+                container.appendChild(card);
+            });
         }
     </script>
 </body>
