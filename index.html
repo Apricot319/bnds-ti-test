@@ -118,15 +118,17 @@
             ]},
             { text: "下午4:30的黄金时段，你会选择？", options: [
                 { text: "待在教室死磕那道导数大题", delta: { AC: 2.0 } },
-                { text: "瘫在远翥楼海洋球池放空，或细嗅蔷薇搞搞创作", delta: { Cr: 2.0, ES: 1.0 } },
                 { text: "操场球场体育馆，足球篮球羽毛球……", delta: { Ath: 2.0, S: 0.5 } },
                 { text: "我最期待的社团活动！", delta: { S: 1.0, Cr: 0.5 } },
-                { text: "我选择补觉zzZ", delta: {}, setFlags: { sleep2: true } }
+                { text: "我选择补觉zzZ", delta: {}, setFlags: { sleep2: true } },
+                // 新增电竞碎片1
+                { text: "找个隐蔽的角落，启动原神/王者/瓦……", delta: { R: -0.5, CM: 0.5 }, setFlags: { esport1: true } }
             ]},
             { text: "晚自习时，你的状态是？", options: [
                 { text: "偷偷刷手机或看闲书", delta: { R: -2.0, AC: -1.0 } },
                 { text: "高度专注，四小时心流弹指一挥间", delta: { AC: 1.5, CM: 1.0 } },
-                { text: "表面疯狂写字，实则脑内开演唱会", delta: { Cr: 1.0, AC: -0.5 } },
+                // 新增电竞碎片2
+                { text: "表面疯狂写字，实则桌斗里激烈团战", delta: { R: -1.5, AC: -1.0 }, setFlags: { esport2: true } },
                 { text: "看心情，状态不好时不如出门遛遛弯", delta: { AC: -0.5, S: 0.5 } }
             ]},
             { text: "一年一度的红窗汇来临，你的角色是？", options: [
@@ -142,14 +144,15 @@
                 { text: "啊？我只知道人大附", delta: {}, setFlags: { isTraitor: true } }
             ]},
             { text: "点开好分数刚好刷出成绩，你是？", options: [
+                { text: "偷偷搞到身边朋友的成绩", delta: { R:-1.0 } },
                 { text: "我草我简直太牛逼了", delta: { AR: 1.5, ES: 0.5 } },
                 { text: "虽然考得很好但是大喊寄了寄了这次真寄了", delta: { S: 0.5 , AR: 0.5, R: -0.5 } },
                 { text: "对身边的朋友说：考这么高！别学了奆神", delta: { S: 0.5, R: -0.5 } },
                 { text: "乖乖的改错复盘答疑", delta: { AC: 1.0 } },
-                { text: "成绩算啥 我鸟都不鸟", delta:{ AR:-1.0, AC:-1.0, R:-1.0} },
-                { text: "偷偷搞到身边朋友的成绩", delta: { R:-1.0 } }
+                { text: "成绩算啥 我鸟都不鸟", delta:{ AR:-1.0, AC:-1.0, R:-1.0} }
             ]},
             { text: "你如何评价自己的成绩雷达图？", options: [
+                { text: "薛定谔的雷达图，取决于考哪科", delta: { L: 1.5 } },
                 { text: "一角如刀锋般尖锐，一侧如奶油般化开……", delta: { AR: -1.0, AC: 1.5 }, setFlags: { preventJuanWang: true } },
                 { text: "你可曾见过满格的苯环？", delta: { AR: 2.0 } },
                 { text: "在拓扑学意义上，我也是六边形战士……", delta: { AR: -1.5, AC: -1.5 } }
@@ -162,6 +165,7 @@
             ]},
             { text: "方圆星选课博弈，你的策略是？", options: [
                 { text: "梭哈最热门课，全凭直觉", delta: { L: 0.5, CM: -1.5 } },
+                { text: "抄学霸的选课单", delta: { S: 1.0, CM: 0.5 } },
                 { text: "黑箱博弈不打整数，把50改成52……", delta: { CM: 2.0, L: -1.0 } },
                 { text: "听天由命，随手一投，结果全中", delta: { L: 2.0, CM: -0.5 } },
                 { text: "精打细算，这把稳了，结果中了0门", delta: { L: -1.0 } }
@@ -180,7 +184,7 @@
             ]},
             { text: "偶遇查手机的老师，你会？", options: [
                 { text: "眼神躲避，原地消失", delta: { R: -2.0, CM: 1.0 } },
-                { text: "根本不带手机来学校", delta: { R: 2.5, AC: 1.0 } },
+                { text: "根本不带手机来学校", delta: { R: 2.0, AC: 1.0 } },
                 { text: "和老师很熟，自如打招呼", delta: { S: 1.5, Ch: 1.0 }, setFlags: { emperor2: true } },
                 { text: "根本不可能偶遇，全学校都是我的眼线", delta: { S: 0.5, R: -0.5 }, setFlags: { daba2: true } }
             ]},
@@ -216,8 +220,9 @@
             { text: "狂欢节当天，你选择？", options: [
                 { text: "跟在校长后面蹭镜头", delta: { S: 1.5, L: 0.5 } },
                 { text: "逃避人群去刷题", delta: { AC: 2.0, S: -2.0 } },
-                { text: "和一群朋友约狼人杀", delta: { S: 2.0, L: 1.0 } },
-                { text: "精心出Cos并疯狂集邮", delta: { Cr: 1.5, Ch: 2.0, S: 1.0 } }
+                { text: "精心出Cos并疯狂集邮", delta: { Cr: 1.5, Ch: 2.0, S: 1.0 } },
+                // 新增电竞碎片3
+                { text: "趁着没人管，赶紧在教室开黑上大分", delta: { R: -1.5, S: 1.0 }, setFlags: { esport3: true } }
             ]},
             { text: "你最喜欢的校园咖啡厅是？", options: [
                 { text: "远七空中花园，边喝咖啡边敲电脑/学习", delta: { AC: 1.5, ES: 1.0 } },
@@ -251,7 +256,10 @@
             { name: "无形的大手", tag: "权力感 策划力 领导力", desc: "活动幕后的大 BOSS，擅长组织协调和规则制定。\n“表彰大会、文化日、草地音乐节，我经手的活动不可能出纰漏。”", dims: { AR:3.5, AC:3, S:4.5, R:4.5, Cr:4, ES:4.5, L:3, CM:4.5, Ch:3.5, Ath:2.5 } },
             { name: "情圣", tag: "人见人爱 花见花开 车见……", desc: "“高中就是用来谈恋爱的！不谈恋爱算我亏了。”", dims: { AR:2.5, AC:2.5, S:4, R:2.5, Cr:3.5, ES:3, L:2.5, CM:2.5, Ch:5, Ath:2.5 } },
             { name: "狛枝凪斗", tag: "超高校级的幸运", desc: '方圆星博弈大赢家，各路抽奖一击必中。\n"人生，真是易如反掌啊。"', dims: { AR:2.5, AC:2.5, S:3, R:2.5, Cr:2.5, ES:3.5, L:5, CM:3, Ch:3, Ath:2.5 } },
-            { name: "行圆分负债者", tag: "低唤醒 反叛", desc: '升旗仪式失踪人口，早八永远在梦游，我签过的行圆条比你吃过的饭都多。\n"行圆分？留着有啥用？"', dims: { AR:2, AC:1.5, S:3, R:0.5, Cr:3, ES:3, L:2.5, CM:2, Ch:2.5, Ath:2.5 } },
+            
+
+            { name: "电竞选手", tag: "峡谷战神 专注上分", desc: "两耳不闻窗外事，一心只求 Penta Kill。\n"老师来了老师来了...” “等会，要五杀了！”", dims: { AR:1.0, AC:0.5, S:2.5, R:0.5, Cr:3.0, ES:3.0, L:3.0, CM:1.0, Ch:2.0, Ath:2.0 } },
+            
             { name: "小迷糊", tag: "混乱秩序 纯真", desc: "不是在丢卡就是在去补办卡的路上，不过稀里糊涂地过也挺爽的嘛。\n“我去，昨天这科留作业了？”", dims: { AR:2.5, AC:2.5, S:3, R:2.5, Cr:2.5, ES:2.5, L:2.5, CM:0.5, Ch:3, Ath:2.5 } },
             { name: "年级主任", tag: "行走的正道之光", desc: "永远遵规守纪，一直想劝导同学学习，莫非你是混入的年级主任？", dims: { AR:3.5, AC:3.5, S:2.5, R:5, Cr:2.5, ES:4.5, L:2.5, CM:4, Ch:2, Ath:2.5 } },
             
@@ -269,7 +277,8 @@
             isTraitor: false, preventJuanWang: false,
             emperor1: false, emperor2: false, emperor3: false,
             sleep1: false, sleep2: false,
-            daba1: false, daba2: false, daba3: false, daba4: false
+            daba1: false, daba2: false, daba3: false, daba4: false,
+            esport1: false, esport2: false, esport3: false 
         };
         let historyStack = [];
 
@@ -280,7 +289,8 @@
                 isTraitor: false, preventJuanWang: false,
                 emperor1: false, emperor2: false, emperor3: false,
                 sleep1: false, sleep2: false,
-                daba1: false, daba2: false, daba3: false, daba4: false
+                daba1: false, daba2: false, daba3: false, daba4: false,
+                esport1: false, esport2: false, esport3: false
             };
             historyStack = [];
             switchScreen('screen-test'); 
@@ -360,13 +370,16 @@
             } 
             else if (flags.sleep1 && flags.sleep2) {
                 res = personalities.find(p => p.name === "不醒人士");
-            } 
+            }
+            else if (flags.esport1 && flags.esport2 && flags.esport3) {
+                res = personalities.find(p => p.name === "电竞选手");
+            }
             else if (scores.R <= 1.0 && scores.AR <= 2.0 && scores.AC <= 2.0) {
                 res = personalities.find(p => p.name === "黑社会");
             } 
             else {
                 let minDistance = Infinity;
-                const specialNames = ["入侵者", "村口大喇叭", "皇帝", "不醒人士", "黑社会"];
+                const specialNames = ["入侵者", "村口大喇叭", "皇帝", "不醒人士", "黑社会", "电竞选手"]; 
                 
                 personalities.forEach(p => { 
                     if (specialNames.includes(p.name)) return; 
