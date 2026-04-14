@@ -142,15 +142,14 @@
                 { text: "啊？我只知道人大附", delta: {}, setFlags: { isTraitor: true } }
             ]},
             { text: "点开好分数刚好刷出成绩，你是？", options: [
-                { text: "偷偷搞到身边朋友的成绩", delta: { R:-1.0 } },
                 { text: "我草我简直太牛逼了", delta: { AR: 1.5, ES: 0.5 } },
                 { text: "虽然考得很好但是大喊寄了寄了这次真寄了", delta: { S: 0.5 , AR: 0.5, R: -0.5 } },
                 { text: "对身边的朋友说：考这么高！别学了奆神", delta: { S: 0.5, R: -0.5 } },
                 { text: "乖乖的改错复盘答疑", delta: { AC: 1.0 } },
-                { text: "成绩算啥 我鸟都不鸟", delta:{ AR:-1.0, AC:-1.0, R:-1.0} }
+                { text: "成绩算啥 我鸟都不鸟", delta:{ AR:-1.0, AC:-1.0, R:-1.0} },
+                { text: "偷偷搞到身边朋友的成绩", delta: { R:-1.0 } }
             ]},
             { text: "你如何评价自己的成绩雷达图？", options: [
-                { text: "薛定谔的雷达图，取决于考哪科", delta: { L: 1.5 } },
                 { text: "一角如刀锋般尖锐，一侧如奶油般化开……", delta: { AR: -1.0, AC: 1.5 }, setFlags: { preventJuanWang: true } },
                 { text: "你可曾见过满格的苯环？", delta: { AR: 2.0 } },
                 { text: "在拓扑学意义上，我也是六边形战士……", delta: { AR: -1.5, AC: -1.5 } }
@@ -163,7 +162,6 @@
             ]},
             { text: "方圆星选课博弈，你的策略是？", options: [
                 { text: "梭哈最热门课，全凭直觉", delta: { L: 0.5, CM: -1.5 } },
-                { text: "抄学霸的选课单", delta: { S: 1.0, CM: 0.5 } },
                 { text: "黑箱博弈不打整数，把50改成52……", delta: { CM: 2.0, L: -1.0 } },
                 { text: "听天由命，随手一投，结果全中", delta: { L: 2.0, CM: -0.5 } },
                 { text: "精打细算，这把稳了，结果中了0门", delta: { L: -1.0 } }
@@ -182,7 +180,7 @@
             ]},
             { text: "偶遇查手机的老师，你会？", options: [
                 { text: "眼神躲避，原地消失", delta: { R: -2.0, CM: 1.0 } },
-                { text: "根本不带手机来学校", delta: { R: 2.0, AC: 1.0 } },
+                { text: "根本不带手机来学校", delta: { R: 2.5, AC: 1.0 } },
                 { text: "和老师很熟，自如打招呼", delta: { S: 1.5, Ch: 1.0 }, setFlags: { emperor2: true } },
                 { text: "根本不可能偶遇，全学校都是我的眼线", delta: { S: 0.5, R: -0.5 }, setFlags: { daba2: true } }
             ]},
@@ -228,10 +226,10 @@
                 { text: "远翥楼轻食咖啡厅，和朋友边聊边品尝饮料", delta: { S: 2.0, Ch: 1.0 } }
             ]},
             { text: "你的自习秘密基地？", options: [
-                { text: "某某老师的工位", delta: { S: 1.0, R: -0.5 }, setFlags: { emperor3: true } },
                 { text: "咖啡厅，和伙伴边聊边学", delta: { S: 1.5, AR: 0.5 } },
                 { text: "导师教室/图书馆阅览室，安静刷题", delta: { AC: 2.0, R: 1.0 } },
-                { text: "操场看台，边看球赛边背书", delta: { Ath: 1.5, AR: 0.5 } }
+                { text: "操场看台，边看球赛边背书", delta: { Ath: 1.5, AR: 0.5 } },
+                { text: "某某老师的工位", delta: { S: 1.0, R: -0.5 }, setFlags: { emperor3: true } }
             ]},
             { text: "你最喜欢的教学楼空间是？", options: [
                 { text: "文科教室，黑板上有文艺涂鸦，书架上满是古今中外典籍", delta: { Cr: 1.5, AR: 0.5 } },
