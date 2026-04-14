@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
-    <title>+-TI | 你是什么类型的BNDSer?</title>
+    <title>+-TI | 你是什么属性的BNDSer?</title>
     
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     
@@ -52,7 +52,7 @@
             <span>开始测试</span> <span class="material-symbols-outlined">arrow_forward</span>
         </button>
 
-		<div class="absolute bottom-6 left-0 w-full text-center pointer-events-none">
+        <div class="absolute bottom-6 left-0 w-full text-center pointer-events-none">
             <p class="text-[10px] font-body tracking-widest text-on-surface/40 uppercase">
                 Designed by <span class="font-bold">Apricot</span>
             </p>
@@ -105,7 +105,7 @@
             ]},
             { text: "听完一上午课，终于到了午休时间，你会？", options: [
                 { text: "准点干饭，人是铁饭是钢", delta: { Ath: 1.0 } },
-				{ text: "边吃边和搭子大谈压轴题思路", delta: { AC: 1.5 } },
+                { text: "边吃边和搭子大谈压轴题思路", delta: { AC: 1.5 } },
                 { text: "焦虑下午的物理小测，直接skip lunch临时抱佛脚", delta: { ES: -1.0, AC: 0.5 } },
                 { text: "抓紧一分一秒和搭子畅聊新听来的八卦", delta: { S: 0.5, R: -0.5 }, setFlags: { daba1: true } },
                 { text: "我选择skip lunch睡觉zzZ", delta: {}, setFlags: { sleep1: true } }
@@ -140,19 +140,19 @@
                 { text: "这个嘛……", delta: {}, setFlags: { isTraitor: true } },
                 { text: "那必然是隔壁...", delta: {}, setFlags: { isTraitor: true } },
                 { text: "啊？我只知道人大附", delta: {}, setFlags: { isTraitor: true } }
-				
             ]},
-			{ text: "点开好分数刚好刷出成绩，你是？", options: [
-				{ text: "偷偷搞到身边朋友的成绩", delta: { R:-1.0 } },
-				{ text: "我草我简直太牛逼了", delta: { AR: 1.5, ES: 0.5 } },
-				{ text: "虽然考得很好但是大喊寄了寄了这次真寄了", delta: { S: 0.5 , AR: 0.5, R: -0.5 } },
-				{ text: "对身边的朋友说：考这么高！别学了奆神", delta: { S: 0.5, R: -0.5 } },
-				{ text: "乖乖的改错复盘答疑", delta: { AC: 1.0 } },
-				{ text: "成绩算啥 我鸟都不鸟", delta:{ AR:-1.0, AC:-1.0, R:-1.0} }
-			]},
+            { text: "点开好分数刚好刷出成绩，你是？", options: [
+                { text: "偷偷搞到身边朋友的成绩", delta: { R:-1.0 } },
+                { text: "我草我简直太牛逼了", delta: { AR: 1.5, ES: 0.5 } },
+                { text: "虽然考得很好但是大喊寄了寄了这次真寄了", delta: { S: 0.5 , AR: 0.5, R: -0.5 } },
+                { text: "对身边的朋友说：考这么高！别学了奆神", delta: { S: 0.5, R: -0.5 } },
+                { text: "乖乖的改错复盘答疑", delta: { AC: 1.0 } },
+                { text: "成绩算啥 我鸟都不鸟", delta:{ AR:-1.0, AC:-1.0, R:-1.0} }
+            ]},
             { text: "你如何评价自己的成绩雷达图？", options: [
-				{ text: "你可曾见过满格的苯环？", delta: { AR: 2.0 } },
+                { text: "薛定谔的雷达图，取决于考哪科", delta: { L: 1.5 } },
                 { text: "一角如刀锋般尖锐，一侧如奶油般化开……", delta: { AR: -1.0, AC: 1.5 }, setFlags: { preventJuanWang: true } },
+                { text: "你可曾见过满格的苯环？", delta: { AR: 2.0 } },
                 { text: "在拓扑学意义上，我也是六边形战士……", delta: { AR: -1.5, AC: -1.5 } }
             ]},
             { text: "自习课45分钟过去，眼前的解析几何大题依旧混乱得如同要挣扎着长出血肉，此时你会？", options: [
@@ -163,9 +163,10 @@
             ]},
             { text: "方圆星选课博弈，你的策略是？", options: [
                 { text: "梭哈最热门课，全凭直觉", delta: { L: 0.5, CM: -1.5 } },
+                { text: "抄学霸的选课单", delta: { S: 1.0, CM: 0.5 } },
                 { text: "黑箱博弈不打整数，把50改成52……", delta: { CM: 2.0, L: -1.0 } },
                 { text: "听天由命，随手一投，结果全中", delta: { L: 2.0, CM: -0.5 } },
-				{ text: "精打细算，这把稳了，结果中了0门", delta: { L: -1.0 } }
+                { text: "精打细算，这把稳了，结果中了0门", delta: { L: -1.0 } }
             ]},
             { text: "食堂窗口最后一份红烧肉…...", options: [
                 { text: "我总是能刚好买到最后一勺", delta: { L: 2.0 } },
@@ -183,7 +184,7 @@
                 { text: "眼神躲避，原地消失", delta: { R: -2.0, CM: 1.0 } },
                 { text: "根本不带手机来学校", delta: { R: 2.0, AC: 1.0 } },
                 { text: "和老师很熟，自如打招呼", delta: { S: 1.5, Ch: 1.0 }, setFlags: { emperor2: true } },
-		{ text: "根本不可能偶遇，全学校都是我的眼线", delta: { S: 0.5, R: -0.5 }, setFlags: { daba2: true } }
+                { text: "根本不可能偶遇，全学校都是我的眼线", delta: { S: 0.5, R: -0.5 }, setFlags: { daba2: true } }
             ]},
             { text: "关于被开“行圆条”这件事...…", options: [
                 { text: "和老师据理力争，最后成功撤销", delta: { CM: 1.5, S: 1.0 } },
@@ -211,14 +212,14 @@
             { text: "班级合照站位，你是？", options: [
                 { text: "站在老师旁边疯狂比剪刀手", delta: { R: 0.5, S: 1.0 } },
                 { text: "极力隐身，躲在角落", delta: { Ch: -1.5, S: -1.5 } },
-                { text: "指挥大家站位，绝佳构图", delta: { Cr: 1.5, S: 1.0 } },
+                { text: "指挥大家站位，绝佳构图", delta: { Cr: 1.0, S: 1.0 } },
                 { text: "自信从容站在C位，摆好最完美的pose", delta: { Ch: 2.0, S: 1.5 } }
             ]},
             { text: "狂欢节当天，你选择？", options: [
                 { text: "跟在校长后面蹭镜头", delta: { S: 1.5, L: 0.5 } },
                 { text: "逃避人群去刷题", delta: { AC: 2.0, S: -2.0 } },
                 { text: "和一群朋友约狼人杀", delta: { S: 2.0, L: 1.0 } },
-                { text: "精心出Cos并疯狂集邮", delta: { Cr: 2.5, Ch: 2.0, S: 1.0 } }
+                { text: "精心出Cos并疯狂集邮", delta: { Cr: 1.5, Ch: 2.0, S: 1.0 } }
             ]},
             { text: "你最喜欢的校园咖啡厅是？", options: [
                 { text: "远七空中花园，边喝咖啡边敲电脑/学习", delta: { AC: 1.5, ES: 1.0 } },
@@ -233,7 +234,7 @@
                 { text: "操场看台，边看球赛边背书", delta: { Ath: 1.5, AR: 0.5 } }
             ]},
             { text: "你最喜欢的教学楼空间是？", options: [
-                { text: "文科教室，黑板上有文艺涂鸦，书架上满是古今中外典籍", delta: { Cr: 2.0, AR: 0.5 } },
+                { text: "文科教室，黑板上有文艺涂鸦，书架上满是古今中外典籍", delta: { Cr: 1.5, AR: 0.5 } },
                 { text: "比起教室，我选择呆在厕所小隔间放空……", delta: { S: -1.0 } },
                 { text: "理科教室，讲台边几何模型、球棍模型，侧黑板上写满今日挑战问题", delta: { AC: 2.0, AR: 1.0 } },
                 { text: "比起教室，还是中厅沙发更吸引我", delta: { S: 2.0, Ch: 1.0 } }
@@ -244,13 +245,15 @@
         const personalities = [
             { name: "卷王", tag: "极度自律 一心学习", desc: "专注度极高，每天学习 25 小时。\n“我遇到过很多人，但比我更卷的还没出生。”", dims: { AR:5, AC:5, S:1, R:3.5, Cr:2.5, ES:4, L:2.5, CM:4.5, Ch:1.5, Ath:2.5 } },
             { name: "偏科战神", tag: "专攻竞赛 单科无敌", desc: "一科夯爆了，另一科拉夯了。\n“别提英语，咱先说说数学……”", dims: { AR:1, AC:4.5, S:2.5, R:2.5, Cr:2.5, ES:3, L:2.5, CM:3.5, Ch:2, Ath:2.5 } },
-            { name: "远翥楼的\n海洋球池", tag: "", desc: "像球池一样五彩斑斓，多才多艺、魅力四射。\n“草地音乐节、校园歌手大赛、狂欢节开幕式……你在哪里认识我的？”", dims: { AR:2.5, AC:2, S:4.5, R:2.5, Cr:5, ES:3, L:2.5, CM:3, Ch:4.5, Ath:2.5 } },
+            
+            { name: "远翥楼的\n海洋球池", tag: "艺术 自由 浪漫", desc: "像球池一样五彩斑斓，多才多艺、魅力四射。\n“草地音乐节、校园歌手大赛、狂欢节开幕式……你在哪里认识我的？”", dims: { AR:1.5, AC:1.5, S:4.5, R:1.5, Cr:5, ES:3, L:2.5, CM:2.5, Ch:4.0, Ath:2.5 } },
+            
             { name: "容光楼的厕所", tag: "易碎玻璃 情绪爆发", desc: "遇到困难就像容光楼的厕所一样，一言不合就爆炸。\n“什么破题，我跟你爆了！！”", dims: { AR:3, AC:3, S:2.5, R:2.5, Cr:2.5, ES:0.5, L:2.5, CM:2, Ch:2.5, Ath:2.5 } },
-            { name: "红窗汇大鳄", tag: "创意 商业头脑 社团主心骨", desc: "社团活动狂热分子，创意爆棚，天生的产品经理。\n“今年销售额第一能不能做到？”", dims: { AR:3, AC:2.5, S:4.5, R:3, Cr:4.5, ES:3.5, L:3, CM:4.5, Ch:3.5, Ath:2.5 } },
-            { name: "无形的大手", tag: "权力感 策划力 领导力", desc: "活动幕后的大 BOSS，擅长组织协调和规则制定。\n“我经手的活动不可能出纰漏。”", dims: { AR:3.5, AC:3, S:4.5, R:4.5, Cr:4, ES:4.5, L:3, CM:4.5, Ch:3.5, Ath:2.5 } },
+            { name: "红窗汇大鳄", tag: "创意 商业头脑 社团主心骨", desc: "社团活动狂热分子，创意爆棚，天生的产品经理。\n“物料筹划信手拈来，今年销售额第一能不能做到？”", dims: { AR:3, AC:2.5, S:4.5, R:3, Cr:4.5, ES:3.5, L:3, CM:4.5, Ch:3.5, Ath:2.5 } },
+            { name: "无形的大手", tag: "权力感 策划力 领导力", desc: "活动幕后的大 BOSS，擅长组织协调和规则制定。\n“表彰大会、文化日、草地音乐节，我经手的活动不可能出纰漏。”", dims: { AR:3.5, AC:3, S:4.5, R:4.5, Cr:4, ES:4.5, L:3, CM:4.5, Ch:3.5, Ath:2.5 } },
             { name: "情圣", tag: "人见人爱 花见花开 车见……", desc: "“高中就是用来谈恋爱的！不谈恋爱算我亏了。”", dims: { AR:2.5, AC:2.5, S:4, R:2.5, Cr:3.5, ES:3, L:2.5, CM:2.5, Ch:5, Ath:2.5 } },
-            { name: "狛枝凪斗", tag: "超高校级的幸运", desc: '博弈大赢家，各路抽奖一击必中。\n"人生，真是易如反掌啊。"', dims: { AR:2.5, AC:2.5, S:3, R:2.5, Cr:2.5, ES:3.5, L:5, CM:3, Ch:3, Ath:2.5 } },
-            { name: "行圆分负债者", tag: "低唤醒 反叛", desc: '升旗仪式失踪人口，早八永远在梦游。\n"行圆分？留着有啥用？"', dims: { AR:2, AC:1.5, S:3, R:0.5, Cr:3, ES:3, L:2.5, CM:2, Ch:2.5, Ath:2.5 } },
+            { name: "狛枝凪斗", tag: "超高校级的幸运", desc: '方圆星博弈大赢家，各路抽奖一击必中。\n"人生，真是易如反掌啊。"', dims: { AR:2.5, AC:2.5, S:3, R:2.5, Cr:2.5, ES:3.5, L:5, CM:3, Ch:3, Ath:2.5 } },
+            { name: "行圆分负债者", tag: "低唤醒 反叛", desc: '升旗仪式失踪人口，早八永远在梦游，签行圆条如流水。\n"行圆分？留着有啥用？"', dims: { AR:2, AC:1.5, S:3, R:0.5, Cr:3, ES:3, L:2.5, CM:2, Ch:2.5, Ath:2.5 } },
             { name: "小迷糊", tag: "混乱秩序 纯真", desc: "不是在丢卡就是在去补办卡的路上，不过稀里糊涂地过也挺爽的嘛。\n“我去，昨天这科留作业了？”", dims: { AR:2.5, AC:2.5, S:3, R:2.5, Cr:2.5, ES:2.5, L:2.5, CM:0.5, Ch:3, Ath:2.5 } },
             { name: "年级主任", tag: "行走的正道之光", desc: "永远遵规守纪，一直想劝导同学学习，莫非你是混入的年级主任？", dims: { AR:3.5, AC:3.5, S:2.5, R:5, Cr:2.5, ES:4.5, L:2.5, CM:4, Ch:2, Ath:2.5 } },
             
@@ -262,7 +265,6 @@
             { name: "入侵者", tag: "忠诚度危机……", desc: "竟然说海淀区最好的高中不是 BNDS？你是哪个学校的？", dims: { AR:0, AC:0, S:0, R:0, Cr:0, ES:0, L:0, CM:0, Ch:0, Ath:0 } }
         ];
 
-        // --- 核心执行逻辑与状态管理 ---
         let currentIdx = 0;
         let scores = { AR:2.5, AC:2.5, S:2.5, R:2.5, Cr:2.5, ES:2.5, L:2.5, CM:2.5, Ch:2.5, Ath:2.5 };
         let flags = {
@@ -349,7 +351,6 @@
         function calculateResult() {
             let res = null;
             
-            // 阶段一：纯强逻辑判定
             if (flags.isTraitor) {
                 res = personalities.find(p => p.name === "入侵者");
             } 
@@ -365,7 +366,6 @@
             else if (scores.R <= 1.0 && scores.AR <= 2.0 && scores.AC <= 2.0) {
                 res = personalities.find(p => p.name === "黑社会");
             } 
-            // 阶段二：常规距离计算
             else {
                 let minDistance = Infinity;
                 const specialNames = ["入侵者", "村口大喇叭", "皇帝", "不醒人士", "黑社会"];
