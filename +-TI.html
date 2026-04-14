@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html class="light" lang="zh-CN">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+    <title>+-TI | 你是什么类型的BNDSer?</title>
+    
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Manrope:wght@400;500;600&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@400&display=swap" rel="stylesheet"/>
+    
+    <script id="tailwind-config">
+        tailwind.config = {
+            theme: {
+                extend: {
+                    "colors": { "primary": "#226969", "on-surface": "#2c3436", "surface-container": "#eaeff0" },
+                    "fontFamily": { "headline": ["Plus Jakarta Sans"], "body": ["Manrope"] }
+                },
+            },
+        }
+    </script>
+
+    <style>
+        .vignette-red { background: radial-gradient(circle, rgba(255, 59, 48, 0.4) 0%, transparent 70%); }
+        .vignette-blue { background: radial-gradient(circle, rgba(0, 122, 255, 0.4) 0%, transparent 70%); }
+        .vignette-yellow { background: radial-gradient(circle, rgba(255, 204, 0, 0.4) 0%, transparent 70%); }
+        .vignette-green { background: radial-gradient(circle, rgba(52, 199, 89, 0.4) 0%, transparent 70%); }
+        .glass-bubble { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(24px); box-shadow: 0 10px 40px rgba(0, 0, 0, 0.04); border: 1px solid rgba(255, 255, 255, 0.6); }
+        
+        /* 确保页面切换正常 */
+        .screen { display: none !important; }
+        .screen.active { display: flex !important; }
+    </style>
+</head>
+<body class="bg-white text-on-surface font-body selection:bg-primary-container relative h-full w-full overflow-hidden">
+
+    <div class="fixed inset-0 pointer-events-none -z-10">
+        <div class="vignette-red absolute -top-20 -left-20 w-[80vw] h-[80vw] blur-3xl rounded-full"></div>
+        <div class="vignette-blue absolute -bottom-20 -right-20 w-[80vw] h-[80vw] blur-3xl rounded-full"></div>
+        <div class="vignette-yellow absolute top-1/3 -right-20 w-[60vw] h-[60vw] blur-3xl rounded-full"></div>
+        <div class="vignette-green absolute bottom-1/4 -left-20 w-[60vw] h-[60vw] blur-3xl rounded-full"></div>
+    </div>
+
+    <main id="screen-intro" class="screen h-screen w-screen flex-col items-center justify-center px-6 active">
+        <div class="glass-bubble px-8 py-6 rounded-[2rem] text-center">
+            <h1 class="text-3xl font-headline font-extrabold tracking-tight flex items-center gap-1 justify-center">
+                <span>What's your</span> <span class="text-primary tracking-tighter">+-TI?</span>
+            </h1>
+        </div>
+        <button onclick="startTest()" class="mt-8 px-10 py-4 bg-primary text-white rounded-full font-headline font-bold text-lg shadow-xl shadow-primary/20 flex items-center gap-3 active:scale-95 transition-all cursor-pointer">
+            <span>开始测试</span> <span class="material-symbols-outlined">arrow_forward</span>
+        </button>
+    </main>
+
+    <main id="screen-test" class="screen h-screen w-screen flex-col items-center justify-center px-6">
+        <div class="w-full max-w-lg mb-4 px-2">
+            <div class="h-1.5 w-full bg-surface-container rounded-full overflow-hidden">
+                <div id="progress-bar" class="h-full bg-primary transition-all duration-300" style="width: 0%"></div>
+            </div>
+        </div>
+        <div class="glass-bubble w-full max-w-lg p-8 rounded-[2rem] text-center">
+            <h2 id="question-text" class="text-xl font-headline font-bold mb-8 text-on-surface leading-tight">载入中...</h2>
+            <div id="options-container" class="space-y-3"></div>
+        </div>
+    </main>
+
+    <main id="screen-result" class="screen h-screen w-screen flex-col items-center justify-start px-6 overflow-y-auto pb-20 pt-10">
+        <div class="glass-bubble w-full max-w-lg p-8 rounded-[2rem] text-center mt-10 mb-10">
+            <p class="text-[10px] uppercase tracking-widest text-primary mb-2 font-black">你的性格主导是</p>
+            <h2 id="result-name" class="text-4xl font-headline font-black text-on-surface mb-1"></h2>
+            <p id="result-tag" class="text-sm font-body font-bold text-primary/70 mb-6"></p>
+            <div class="w-full h-px bg-outline-variant/20 mb-6"></div>
+            <p id="result-desc" class="whitespace-pre-line text-sm text-on-surface-variant leading-relaxed mb-8 text-left"></p>
+            
+            <div id="dim-container" class="grid grid-cols-2 gap-x-6 gap-y-2 text-left text-[9px] uppercase font-bold tracking-widest text-on-surface/50 border-t border-dashed border-primary/20 pt-6"></div>
+
+            <button onclick="location.reload()" class="mt-10 px-8 py-3 bg-primary text-white rounded-full font-headline font-bold text-sm shadow-lg shadow-primary/10 active:scale-95 transition-all">
+                重新探索
+            </button>
+        </div>
+    </main>
+
+    <script>
+        // --- 完整题库 (22题) ---
+        const questions = [
+            { text: "今早有语文/英语早读，此时你的状态是？", options: [
+                { text: "提前一天预习好所有早读内容，从容入座等待发卷", delta: { AC: 2.0, R: 0.5 } },
+                { text: "踩点进门并和邻座打个招呼", delta: { S: 1.0, R: 0.5 } },
+                { text: "7:50刷新在教室抽走一张空白早读条/根本不出现", delta: { AC: -2.0, R: -1.5, CM: -1.0 } }
+            ]},
+            { text: "听完一上午课，终于到了午休时间，你会？", options: [
+                { text: "准点干饭，人是铁饭是钢", delta: { Ath: 1.0 } },
+                { text: "边吃边和搭子大谈压轴题思路", delta: { AC: 1.5 } },
+                { text: "焦虑下午的物理小测，直接skip lunch临时抱佛脚", delta: { ES: -1.0, AC: 0.5 } }
+            ]},
+            { text: "一掏兜发现校园卡又丢了，你的反应是？", options: [
+                { text: "冷静回想路径并起身复盘寻找", delta: { CM: 1.5, ES: 1.0 } },
+                { text: "瞬间焦虑，觉得今天干什么都不顺", delta: { ES: -2.5, CM: -0.5 } },
+                { text: "习惯了，直接熟练地去补办", delta: { CM: -2.0, L: -1.0 } }
+            ]},
+            { text: "下午4:30的黄金时段，你会选择？", options: [
+                { text: "操场球场体育馆，足球篮球羽毛球……", delta: { Ath: 2.0, S: 0.5 } },
+                { text: "待在教室死磕那道导数大题", delta: { AC: 2.0 } },
+                { text: "瘫在远翥楼海洋球池放空，或细嗅蔷薇搞搞创作", delta: { Cr: 2.0, ES: 1.0 } }
+            ]},
+            { text: "晚自习时，你的状态是？", options: [
+                { text: "高度专注，四小时心流弹指一挥间", delta: { AC: 1.5, CM: 1.0 } },
+                { text: "看心情，状态不好时不如出门遛遛弯", delta: { AC: -0.5, S: 0.5 } },
+                { text: "偷偷刷手机或看闲书", delta: { R: -2.0, AC: -1.0 } }
+            ]},
+            { text: "一年一度的红窗汇来临，你的角色是？", options: [
+                { text: "统筹全局的幕后策划", delta: { S: 2.0, CM: 1.0 } },
+                { text: "金牌摊主，热卖榜第一名，摊位前水泄不通", delta: { Cr: 2.0, Ch: 0.5 } },
+                { text: "大逛特逛，大买特买，大玩特玩", delta: { S: 1.0,AC:-0.5 } }
+            ]},
+            { text: "海淀区最好的高中是？", options: [
+                { text: "BNDS YYDS", delta: {} },
+                { text: "这个嘛……", delta: { traitor: true } }
+            ]},
+            { text: "你如何评价自己的成绩雷达图？", options: [
+                { text: "你可曾见过满格的苯环？", delta: { AR: 2.0 } },
+                { text: "一角如刀锋般尖锐，一侧如奶油般化开……", delta: { AR: -1.0, AC: 1.5 } },
+                { text: "在拓扑学意义上，我也是六边形战士……", delta: { AR: -1.5, AC: -1.5 } }
+            ]},
+            { text: "自习课45分钟过去，眼前的解析几何大题依旧混乱得如同要挣扎着长出血肉，此时你会？", options: [
+                { text: "晚饭取消！还有我解不出来的题？", delta: { ES: 1.5, AC: 1.0 } },
+                { text: "当场爆炸，想撕卷子，跑进厕所哞哞哭……", delta: { ES: -2.5 } },
+                { text: "战术跳过，下一道更乖。", delta: { CM: 1.0 } }
+            ]},
+            { text: "选课筹码博弈，你的策略是？", options: [
+                { text: "黑箱博弈不打整数，把50改成52……", delta: { CM: 2.0, L: -1.0 } },
+                { text: "听天由命，随手一投，结果全中", delta: { L: 2.0, CM: -0.5 } },
+                { text: "梭哈最热门课，全凭直觉", delta: { L: 0.5, CM: -1.5 } }
+            ]},
+            { text: "食堂窗口最后一份红烧肉…...", options: [
+                { text: "我总是能刚好买到最后一勺", delta: { L: 2.0 } },
+                { text: "总是到我刚好卖完", delta: { L: -2.0, ES: -1.0 } },
+                { text: "我跑得够快抢到了", delta: { Ath: 2.0 } }
+            ]},
+            { text: "社团招新抽奖现场，你是？", options: [
+                { text: "真的中了限量版周边", delta: { L: 2.0 } },
+                { text: "低头刷题，不参与喧嚣", delta: { AC: 1.5, L: -1.0 } },
+                { text: "没中奖但在地上捡到钱", delta: { L: 1.5, CM: 0.5 } }
+            ]},
+            { text: "偶遇查手机的老师，你会？", options: [
+                { text: "根本不带手机来学校", delta: { R: 2.0, AC: 1.0 } },
+                { text: "和老师很熟，自如打招呼", delta: { S: 1.5, Ch: 1.0 } },
+                { text: "眼神躲避，原地消失", delta: { R: -2.0, CM: 1.0 } }
+            ]},
+            { text: "关于被开“行圆条”这件事...…", options: [
+                { text: "从未被开，我是遵规守纪标兵", delta: { R: 3.0, AC: 1.0 } },
+                { text: "乖乖签字，自认倒霉", delta: { ES: 1.0, R: 0.5 } },
+                { text: "灵魂质问：老师你咋就抓我？", delta: { R: -1.5, ES: -1.5 } }
+            ]},
+            { text: "晚自习偷偷吃零食，你是？", options: [
+                { text: "绝对不吃，教室是学习的地方", delta: { R: 1.5, AC: 1.0 } },
+                { text: "享受违规的肾上腺素感", delta: { R: -1.0, CM: 0.5 } },
+                { text: "全桌共享，其乐融融", delta: { S: 1.5, R: -1.5 } }
+            ]},
+            { text: "储物柜里多了一盒无名牛奶？", options: [
+                { text: "上交公家，寻找失主", delta: { R: 1.5, Ch: -1.5 } },
+                { text: "暗暗享受被暗恋感", delta: { Ch: 2.5, S: 1.0 } },
+                { text: "以为放错，直接拆开喝掉", delta: { Ch: 0.5, CM: -2.0 } }
+            ]},
+            { text: "有不认识的人突然来找你...", options: [
+                { text: "“要咨询我昨天的压轴题？”", delta: { AC: 2.0, AR: 1.0 } },
+                { text: "“我的魅力依旧如此之大？”", delta: { Ch: 2.5, S: 1.0 } },
+                { text: "“难道又是捡到我卡的？”", delta: { CM: -2.5, Ch: 0.5 } }
+            ]},
+            { text: "班级合照站位，你是？", options: [
+                { text: "极力隐身，躲在角落", delta: { Ch: -1.5, S: -1.5 } },
+                { text: "自信从容站在C位，摆好最完美的pose", delta: { Ch: 2.0, S: 1.5 } },
+                { text: "指挥大家站位，绝佳构图", delta: { Cr: 1.5, S: 1.0 } }
+            ]},
+            { text: "狂欢节当天，你选择？", options: [
+                { text: "逃避人群去刷题", delta: { AC: 2.0, S: -2.0 } },
+                { text: "精心出Cos并疯狂集邮", delta: { Cr: 2.5, Ch: 2.0, S: 1.0 } },
+                { text: "和一群朋友约狼人杀", delta: { S: 2.0, L: 1.0 } }
+            ]},
+            { text: "你最喜欢的校园咖啡厅是？", options: [
+                { text: "图书馆咖啡厅，社团活动圣地", delta: { S: 1.5, Cr: 1.0 } },
+                { text: "远翥楼轻食咖啡厅，和朋友边聊边品尝饮料", delta: { S: 2.0, Ch: 1.0 } },
+                { text: "远七空中花园，边喝咖啡边敲电脑/学习", delta: { AC: 1.5, ES: 1.0 } }
+            ]},
+            { text: "你的自习秘密基地？", options: [
+                { text: "导师教室/图书馆阅览室，安静刷题", delta: { AC: 2.0, R: 1.0 } },
+                { text: "咖啡厅，和伙伴边聊边学", delta: { S: 1.5, AR: 0.5 } },
+                { text: "操场看台，边看球赛边背书", delta: { Ath: 1.5, AR: 0.5 } }
+            ]},
+            { text: "你最喜欢的学科教室是？", options: [
+                { text: "语文教室，黑板上有文艺涂鸦，书架上满是古今中外典籍", delta: { Cr: 2.0, AR: 0.5 } },
+                { text: "理科教室，讲台边几何模型、球棍模型，侧黑板上写满今日挑战问题", delta: { AC: 2.0, AR: 1.0 } },
+                { text: "比起教室，还是中厅沙发更吸引我", delta: { S: 2.0, Ch: 1.0 } }
+            ]}
+        ];
+
+        // --- 核心人格库 (包含降噪处理 2.5) ---
+        const personalities = [
+            { name: "卷王", tag: "孤寂、极度刻苦", desc: "专注度极高，每天学习 25 小时。\n“我遇到过很多人，但比我更卷的还没出生。”", dims: { AR:5, AC:5, S:1, R:3.5, Cr:2.5, ES:4, L:2.5, CM:4.5, Ch:1.5, Ath:2.5 } },
+            { name: "偏科战神", tag: "智力溢出、非人类", desc: "一科夯爆了，另一科拉夯了。\n“别提英语，咱先说说数学……”", dims: { AR:1, AC:4.5, S:2.5, R:2.5, Cr:2.5, ES:3, L:2.5, CM:3.5, Ch:2, Ath:2.5 } },
+            { name: "远翥楼海洋球池", tag: "艺术、多才多艺", desc: "像球池一样五彩斑斓，多才多艺、魅力四射。\n“草地音乐节、校园歌手大赛、狂欢节开幕式……你在哪里认识我的？”", dims: { AR:2.5, AC:2, S:4.5, R:2.5, Cr:5, ES:3, L:2.5, CM:3, Ch:4.5, Ath:2.5 } },
+            { name: "容光楼的厕所", tag: "易碎、高爆发", desc: "遇到困难就像容光楼的厕所一样，一言不合就爆炸。\n“什么破题，我跟你爆了！！”", dims: { AR:3, AC:3, S:2.5, R:2.5, Cr:2.5, ES:0.5, L:2.5, CM:2, Ch:2.5, Ath:2.5 } },
+            { name: "红窗汇大鳄", tag: "商业头脑、创意", desc: "社团活动狂热分子，创意爆棚，天生的产品经理。\n“今年销售额第一能不能做到？”", dims: { AR:3, AC:2.5, S:4.5, R:3, Cr:4.5, ES:3.5, L:3, CM:4.5, Ch:3.5, Ath:2.5 } },
+            { name: "无形的大手", tag: "权力感、策划力", desc: "活动幕后的大 BOSS，擅长组织协调和规则制定。\n“我经手的活动不可能出纰漏。”", dims: { AR:3.5, AC:3, S:4.5, R:4.5, Cr:4, ES:4.5, L:3, CM:4.5, Ch:3.5, Ath:2.5 } },
+            { name: "情圣", tag: "桃花指数爆表", desc: "“高中就是用来谈恋爱的！不谈恋爱算我亏了。”", dims: { AR:2.5, AC:2.5, S:4, R:2.5, Cr:3.5, ES:3, L:2.5, CM:2.5, Ch:5, Ath:2.5 } },
+            { name: "蛇喰梦子", tag: "100筹码、强运", desc: "博弈大赢家，各路抽奖一击必中。\n“人生真是易如反掌啊。“", dims: { AR:2.5, AC:2.5, S:3, R:2.5, Cr:2.5, ES:3.5, L:5, CM:3, Ch:3, Ath:2.5 } },
+            { name: "行圆分负债者", tag: "低唤醒、反叛", desc: "升旗仪式失踪人口，早八永远在梦游。\n“行圆分？留着有啥用？”", dims: { AR:2, AC:1.5, S:3, R:0.5, Cr:3, ES:3, L:2.5, CM:2, Ch:2.5, Ath:2.5 } },
+            { name: "小迷糊", tag: "混乱秩序、纯真", desc: "不是在丢卡就是在去补办卡的路上。“昨天老师留作业了？”", dims: { AR:2.5, AC:2.5, S:3, R:2.5, Cr:2.5, ES:2.5, L:2.5, CM:0.5, Ch:3, Ath:2.5 } },
+            { name: "年级主任", tag: "行走的正道之光", desc: "永远遵规守纪，一直想劝导同学学习，莫非你是混入的年级主任？", dims: { AR:3.5, AC:3.5, S:2.5, R:5, Cr:2.5, ES:4.5, L:2.5, CM:4, Ch:2, Ath:2.5 } },
+            { name: "入侵者", tag: "忠诚度危机", desc: "竟然说海淀区最好的高中不是 BNDS？你是哪个学校的？", dims: { AR:0, AC:0, S:0, R:0, Cr:0, ES:0, L:0, CM:0, Ch:0, Ath:0 } }
+        ];
+
+        // --- 核心执行逻辑 ---
+        let currentIdx = 0;
+        let isTraitor = false;
+        let scores = { AR:2.5, AC:2.5, S:2.5, R:2.5, Cr:2.5, ES:2.5, L:2.5, CM:2.5, Ch:2.5, Ath:2.5 };
+
+        function startTest() { 
+            switchScreen('screen-test'); 
+            renderQuestion(); 
+        }
+        
+        function switchScreen(id) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+        }
+
+        function renderQuestion() {
+            const q = questions[currentIdx];
+            document.getElementById('question-text').innerText = `${currentIdx + 1}. ${q.text}`;
+            
+            const container = document.getElementById('options-container');
+            container.innerHTML = '';
+            
+            q.options.forEach(opt => {
+                const btn = document.createElement('button');
+                btn.className = "w-full py-4 px-6 bg-surface-container/50 hover:bg-primary hover:text-white rounded-2xl text-sm font-bold transition-all text-left shadow-sm";
+                btn.innerText = opt.text;
+                btn.onclick = () => {
+                    // 1. 记录判定
+                    if(opt.delta && opt.delta.traitor) {
+                        isTraitor = true;
+                    } else if(opt.delta) {
+                        for(let d in opt.delta) {
+                            if(d !== 'traitor') {
+                                scores[d] = Math.max(0, Math.min(5, scores[d] + opt.delta[d]));
+                            }
+                        }
+                    }
+                    
+                    // 2. 进入下一题或结算
+                    currentIdx++;
+                    if(currentIdx < questions.length) {
+                        renderQuestion();
+                    } else {
+                        calculateResult();
+                    }
+                };
+                container.appendChild(btn);
+            });
+            
+            // 更新进度条
+            document.getElementById('progress-bar').style.width = `${(currentIdx / questions.length) * 100}%`;
+        }
+
+        function calculateResult() {
+            let res = null;
+            
+            // 叛徒强制拦截
+            if(isTraitor) {
+                res = personalities.find(p => p.name === "入侵者");
+            } else {
+                let minDistance = Infinity;
+                personalities.forEach(p => { 
+                    if(p.name === "入侵者") return; 
+                    
+                    let distance = 0; 
+                    for(let k in p.dims) {
+                        distance += Math.abs(scores[k] - p.dims[k]); 
+                    }
+                    if(distance < minDistance) { 
+                        minDistance = distance; 
+                        res = p; 
+                    } 
+                });
+                
+                // 放宽到 16，不再动不动就变龙娃
+                if(minDistance > 16) {
+                    res = { 
+                        name: "龙娃", 
+                        tag: "健全立体的天选BNDSer", 
+                        desc: "每个人格都沾点，你是 +-TI 逻辑中那个最平衡、最独特的灵魂。" 
+                    };
+                }
+            }
+            displayResult(res);
+        }
+
+        function displayResult(p) {
+            switchScreen('screen-result');
+            
+            document.getElementById('result-name').innerText = p.name;
+            document.getElementById('result-tag').innerText = p.tag;
+            document.getElementById('result-desc').innerText = p.desc;
+            
+            const dc = document.getElementById('dim-container');
+            dc.innerHTML = '';
+            
+            if(p.name !== "入侵者") {
+                const dimNames = { AR:'学术广度', AC:'刻苦度', S:'社交', R:'规则', Cr:'创意', ES:'情绪稳定', L:'运气', CM:'清醒度', Ch:'桃花', Ath:'体育' };
+                for(let k in dimNames) {
+                    dc.innerHTML += `<div class="p-3 bg-surface-container/30 rounded-xl shadow-sm flex justify-between items-center">
+                        <span class="text-[10px] text-on-surface/70">${dimNames[k]}</span>
+                        <span class="text-xs text-primary font-black">${scores[k].toFixed(1)}</span>
+                    </div>`;
+                }
+            }
+        }
+    </script>
+</body>
+</html>
