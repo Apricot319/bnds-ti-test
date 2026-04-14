@@ -54,12 +54,20 @@
     </main>
 
     <main id="screen-test" class="screen h-screen w-screen flex-col items-center justify-center px-6">
+        <div class="w-full max-w-lg mb-2 px-2 flex justify-between items-center">
+            <button id="back-btn" onclick="goBack()" class="flex items-center text-on-surface/50 hover:text-primary transition-all invisible">
+                <span class="material-symbols-outlined" style="font-size: 18px;">arrow_back_ios_new</span>
+                <span class="font-bold ml-1 text-sm">上一题</span>
+            </button>
+            <span id="progress-text" class="text-xs font-bold text-primary/50 tracking-widest"></span>
+        </div>
+
         <div class="w-full max-w-lg mb-4 px-2">
             <div class="h-1.5 w-full bg-surface-container rounded-full overflow-hidden">
                 <div id="progress-bar" class="h-full bg-primary transition-all duration-300" style="width: 0%"></div>
             </div>
         </div>
-        <div class="glass-bubble w-full max-w-lg p-8 rounded-[2rem] text-center">
+        <div class="glass-bubble w-full max-w-lg p-8 rounded-[2rem] text-center flex flex-col justify-center min-h-[50vh]">
             <h2 id="question-text" class="text-xl font-headline font-bold mb-8 text-on-surface leading-tight">载入中...</h2>
             <div id="options-container" class="space-y-3"></div>
         </div>
@@ -71,7 +79,7 @@
             <h2 id="result-name" class="text-4xl font-headline font-black text-on-surface mb-1"></h2>
             <p id="result-tag" class="text-sm font-body font-bold text-primary/70 mb-6"></p>
             <div class="w-full h-px bg-outline-variant/20 mb-6"></div>
-            <p id="result-desc" class="whitespace-pre-line text-sm text-on-surface-variant leading-relaxed mb-8 text-left"></p>
+            <p id="result-desc" class="whitespace-pre-line text-sm text-on-surface-variant leading-relaxed mb-8 text-center"></p>
             
             <div id="dim-container" class="grid grid-cols-2 gap-x-6 gap-y-2 text-left text-[9px] uppercase font-bold tracking-widest text-on-surface/50 border-t border-dashed border-primary/20 pt-6"></div>
 
@@ -120,7 +128,8 @@
             ]},
             { text: "你如何评价自己的成绩雷达图？", options: [
                 { text: "你可曾见过满格的苯环？", delta: { AR: 2.0 } },
-                { text: "一角如刀锋般尖锐，一侧如奶油般化开……", delta: { AR: -1.0, AC: 1.5 } },
+                // 新增一票否决逻辑：preventJuanWang: true
+                { text: "一角如刀锋般尖锐，一侧如奶油般化开……", delta: { AR: -1.0, AC: 1.5, preventJuanWang: true } },
                 { text: "在拓扑学意义上，我也是六边形战士……", delta: { AR: -1.5, AC: -1.5 } }
             ]},
             { text: "自习课45分钟过去，眼前的解析几何大题依旧混乱得如同要挣扎着长出血肉，此时你会？", options: [
@@ -195,28 +204,39 @@
             ]}
         ];
 
-        // --- 核心人格库 (包含降噪处理 2.5) ---
+         // --- 核心人格库 ---
         const personalities = [
-            { name: "卷王", tag: "孤寂、极度刻苦", desc: "专注度极高，每天学习 25 小时。\n“我遇到过很多人，但比我更卷的还没出生。”", dims: { AR:5, AC:5, S:1, R:3.5, Cr:2.5, ES:4, L:2.5, CM:4.5, Ch:1.5, Ath:2.5 } },
-            { name: "偏科战神", tag: "智力溢出、非人类", desc: "一科夯爆了，另一科拉夯了。\n“别提英语，咱先说说数学……”", dims: { AR:1, AC:4.5, S:2.5, R:2.5, Cr:2.5, ES:3, L:2.5, CM:3.5, Ch:2, Ath:2.5 } },
-            { name: "远翥楼海洋球池", tag: "艺术、多才多艺", desc: "像球池一样五彩斑斓，多才多艺、魅力四射。\n“草地音乐节、校园歌手大赛、狂欢节开幕式……你在哪里认识我的？”", dims: { AR:2.5, AC:2, S:4.5, R:2.5, Cr:5, ES:3, L:2.5, CM:3, Ch:4.5, Ath:2.5 } },
-            { name: "容光楼的厕所", tag: "易碎、高爆发", desc: "遇到困难就像容光楼的厕所一样，一言不合就爆炸。\n“什么破题，我跟你爆了！！”", dims: { AR:3, AC:3, S:2.5, R:2.5, Cr:2.5, ES:0.5, L:2.5, CM:2, Ch:2.5, Ath:2.5 } },
-            { name: "红窗汇大鳄", tag: "商业头脑、创意", desc: "社团活动狂热分子，创意爆棚，天生的产品经理。\n“今年销售额第一能不能做到？”", dims: { AR:3, AC:2.5, S:4.5, R:3, Cr:4.5, ES:3.5, L:3, CM:4.5, Ch:3.5, Ath:2.5 } },
-            { name: "无形的大手", tag: "权力感、策划力", desc: "活动幕后的大 BOSS，擅长组织协调和规则制定。\n“我经手的活动不可能出纰漏。”", dims: { AR:3.5, AC:3, S:4.5, R:4.5, Cr:4, ES:4.5, L:3, CM:4.5, Ch:3.5, Ath:2.5 } },
+            { name: "卷王", tag: "做题启动！", desc: "专注度极高，每天学习 25 小时。\n“我遇到过很多人，但比我更卷的还没出生。”", dims: { AR:5, AC:5, S:1, R:3.5, Cr:2.5, ES:4, L:2.5, CM:4.5, Ch:1.5, Ath:2.5 } },
+            { name: "偏科战神", tag: "竞赛佬/单科无敌", desc: "一科夯爆了，另一科拉夯了。\n“别提英语，咱先说说数学……”", dims: { AR:1, AC:4.5, S:2.5, R:2.5, Cr:2.5, ES:3, L:2.5, CM:3.5, Ch:2, Ath:2.5 } },
+            { name: "远翥楼的\n海洋球池", tag: "唱跳rap篮球 斜杠青年", desc: "像球池一样五彩斑斓，多才多艺、魅力四射。\n“草地音乐节、校园歌手大赛、狂欢节开幕式……你在哪里认识我的？”", dims: { AR:2.5, AC:2, S:4.5, R:2.5, Cr:5, ES:3, L:2.5, CM:3, Ch:4.5, Ath:2.5 } },
+            { name: "容光楼的厕所", tag: "易碎 高爆发", desc: "遇到困难就像容光楼的厕所一样，一言不合就爆炸。\n“什么破题，我跟你爆了！！”", dims: { AR:3, AC:3, S:2.5, R:2.5, Cr:2.5, ES:0.5, L:2.5, CM:2, Ch:2.5, Ath:2.5 } },
+            { name: "红窗汇大鳄", tag: "商业头脑 创意 社团主心骨", desc: "社团活动狂热分子，创意爆棚，天生的产品经理。\n“今年销售额第一能不能做到？”", dims: { AR:3, AC:2.5, S:4.5, R:3, Cr:4.5, ES:3.5, L:3, CM:4.5, Ch:3.5, Ath:2.5 } },
+            { name: "无形的大手", tag: "权力感 策划力 领导力", desc: "活动幕后的大 BOSS，非常擅长组织协调和规则制定。\n“表彰大会、红窗汇、文化日，我经手的活动不可能出纰漏。”", dims: { AR:3.5, AC:3, S:4.5, R:4.5, Cr:4, ES:4.5, L:3, CM:4.5, Ch:3.5, Ath:2.5 } },
             { name: "情圣", tag: "桃花指数爆表", desc: "“高中就是用来谈恋爱的！不谈恋爱算我亏了。”", dims: { AR:2.5, AC:2.5, S:4, R:2.5, Cr:3.5, ES:3, L:2.5, CM:2.5, Ch:5, Ath:2.5 } },
-            { name: "蛇喰梦子", tag: "100筹码、强运", desc: "博弈大赢家，各路抽奖一击必中。\n“人生真是易如反掌啊。“", dims: { AR:2.5, AC:2.5, S:3, R:2.5, Cr:2.5, ES:3.5, L:5, CM:3, Ch:3, Ath:2.5 } },
-            { name: "行圆分负债者", tag: "低唤醒、反叛", desc: "升旗仪式失踪人口，早八永远在梦游。\n“行圆分？留着有啥用？”", dims: { AR:2, AC:1.5, S:3, R:0.5, Cr:3, ES:3, L:2.5, CM:2, Ch:2.5, Ath:2.5 } },
-            { name: "小迷糊", tag: "混乱秩序、纯真", desc: "不是在丢卡就是在去补办卡的路上。\n“昨天老师留作业了？”", dims: { AR:2.5, AC:2.5, S:3, R:2.5, Cr:2.5, ES:2.5, L:2.5, CM:0.5, Ch:3, Ath:2.5 } },
+            { name: "蛇喰梦子", tag: "强运 100Luck", desc: '博弈大赢家，各路抽奖一击必中，我听见强运的回响。\n"人生真是易如反掌啊。"', dims: { AR:2.5, AC:2.5, S:3, R:2.5, Cr:2.5, ES:3.5, L:5, CM:3, Ch:3, Ath:2.5 } },
+            { name: "行圆分负债者", tag: "低唤醒 反叛", desc: '升旗仪式失踪人口，早八永远在梦游，签行圆条。\n"行圆分？留着有啥用？"', dims: { AR:2, AC:1.5, S:3, R:0.5, Cr:3, ES:3, L:2.5, CM:2, Ch:2.5, Ath:2.5 } },
+            { name: "小迷糊", tag: "混乱秩序 纯真", desc: "不是在丢卡就是在去补办卡的路上，不过稀里糊涂过日子也挺爽的嘛。“昨天老师留作业了？”", dims: { AR:2.5, AC:2.5, S:3, R:2.5, Cr:2.5, ES:2.5, L:2.5, CM:0.5, Ch:3, Ath:2.5 } },
             { name: "年级主任", tag: "行走的正道之光", desc: "永远遵规守纪，一直想劝导同学学习，莫非你是混入的年级主任？", dims: { AR:3.5, AC:3.5, S:2.5, R:5, Cr:2.5, ES:4.5, L:2.5, CM:4, Ch:2, Ath:2.5 } },
             { name: "入侵者", tag: "忠诚度危机", desc: "竟然说海淀区最好的高中不是 BNDS？你是哪个学校的？", dims: { AR:0, AC:0, S:0, R:0, Cr:0, ES:0, L:0, CM:0, Ch:0, Ath:0 } }
         ];
 
-        // --- 核心执行逻辑 ---
+        // --- 核心执行逻辑与状态管理 ---
         let currentIdx = 0;
         let isTraitor = false;
+        let preventJuanWang = false; // 新增：禁止被判定为卷王的标志
         let scores = { AR:2.5, AC:2.5, S:2.5, R:2.5, Cr:2.5, ES:2.5, L:2.5, CM:2.5, Ch:2.5, Ath:2.5 };
+        
+        // 历史记录栈，用于保存每一步的状态
+        let historyStack = [];
 
         function startTest() { 
+            // 每次重新开始时，重置所有状态
+            currentIdx = 0;
+            isTraitor = false;
+            preventJuanWang = false;
+            scores = { AR:2.5, AC:2.5, S:2.5, R:2.5, Cr:2.5, ES:2.5, L:2.5, CM:2.5, Ch:2.5, Ath:2.5 };
+            historyStack = [];
+            
             switchScreen('screen-test'); 
             renderQuestion(); 
         }
@@ -226,7 +246,35 @@
             document.getElementById(id).classList.add('active');
         }
 
+        // 返回上一题逻辑
+        function goBack() {
+            if(currentIdx > 0 && historyStack.length > 0) {
+                // 弹出历史栈中的最后一次状态
+                const prevState = historyStack.pop();
+                
+                // 恢复分数和标记
+                scores = prevState.scores;
+                isTraitor = prevState.isTraitor;
+                preventJuanWang = prevState.preventJuanWang;
+                
+                // 退回上一题
+                currentIdx--;
+                renderQuestion();
+            }
+        }
+
         function renderQuestion() {
+            // 控制返回按钮的显示与隐藏
+            const backBtn = document.getElementById('back-btn');
+            if(currentIdx > 0) {
+                backBtn.classList.remove('invisible');
+            } else {
+                backBtn.classList.add('invisible');
+            }
+
+            // 更新进度文本
+            document.getElementById('progress-text').innerText = `${currentIdx + 1} / ${questions.length}`;
+
             const q = questions[currentIdx];
             document.getElementById('question-text').innerText = `${currentIdx + 1}. ${q.text}`;
             
@@ -238,18 +286,27 @@
                 btn.className = "w-full py-4 px-6 bg-surface-container/50 hover:bg-primary hover:text-white rounded-2xl text-sm font-bold transition-all text-left shadow-sm";
                 btn.innerText = opt.text;
                 btn.onclick = () => {
-                    // 1. 记录判定
-                    if(opt.delta && opt.delta.traitor) {
-                        isTraitor = true;
-                    } else if(opt.delta) {
+                    // 1. 在修改分数前，将当前状态深拷贝保存到历史栈中
+                    historyStack.push({
+                        scores: JSON.parse(JSON.stringify(scores)),
+                        isTraitor: isTraitor,
+                        preventJuanWang: preventJuanWang
+                    });
+
+                    // 2. 记录当前选项的影响
+                    if(opt.delta) {
+                        if(opt.delta.traitor) isTraitor = true;
+                        // 触发防止成为“卷王”的特殊逻辑
+                        if(opt.delta.preventJuanWang) preventJuanWang = true;
+
                         for(let d in opt.delta) {
-                            if(d !== 'traitor') {
+                            if(d !== 'traitor' && d !== 'preventJuanWang') {
                                 scores[d] = Math.max(0, Math.min(5, scores[d] + opt.delta[d]));
                             }
                         }
                     }
                     
-                    // 2. 进入下一题或结算
+                    // 3. 进入下一题或结算
                     currentIdx++;
                     if(currentIdx < questions.length) {
                         renderQuestion();
@@ -274,6 +331,8 @@
                 let minDistance = Infinity;
                 personalities.forEach(p => { 
                     if(p.name === "入侵者") return; 
+                    // 新增一票否决逻辑：如果命中特殊标记，则强行跳过“卷王”的匹配
+                    if(preventJuanWang && p.name === "卷王") return;
                     
                     let distance = 0; 
                     for(let k in p.dims) {
