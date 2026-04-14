@@ -28,9 +28,9 @@
         .vignette-green { background: radial-gradient(circle, rgba(52, 199, 89, 0.4) 0%, transparent 70%); }
         .glass-bubble { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(24px); box-shadow: 0 10px 40px rgba(0, 0, 0, 0.04); border: 1px solid rgba(255, 255, 255, 0.6); }
         
-        /* 确保页面切换正常 */
         .screen { display: none !important; }
         .screen.active { display: flex !important; }
+        ::-webkit-scrollbar { display: none; }
     </style>
 </head>
 <body class="bg-white text-on-surface font-body selection:bg-primary-container relative h-full w-full overflow-hidden">
@@ -53,8 +53,8 @@
         </button>
     </main>
 
-    <main id="screen-test" class="screen h-screen w-screen flex-col items-center justify-center px-6">
-        <div class="w-full max-w-lg mb-2 px-2 flex justify-between items-center">
+    <main id="screen-test" class="screen h-screen w-screen flex-col items-center justify-start px-6 overflow-y-auto pt-10 pb-20">
+        <div class="w-full max-w-lg mb-2 px-2 flex justify-between items-center mt-4">
             <button id="back-btn" onclick="goBack()" class="flex items-center text-on-surface/50 hover:text-primary transition-all invisible">
                 <span class="material-symbols-outlined" style="font-size: 18px;">arrow_back_ios_new</span>
                 <span class="font-bold ml-1 text-sm">上一题</span>
@@ -67,7 +67,7 @@
                 <div id="progress-bar" class="h-full bg-primary transition-all duration-300" style="width: 0%"></div>
             </div>
         </div>
-        <div class="glass-bubble w-full max-w-lg p-8 rounded-[2rem] text-center flex flex-col justify-center min-h-[50vh]">
+        <div class="glass-bubble w-full max-w-lg p-8 rounded-[2rem] text-center flex flex-col justify-center min-h-[50vh] mb-10">
             <h2 id="question-text" class="text-xl font-headline font-bold mb-8 text-on-surface leading-tight">载入中...</h2>
             <div id="options-container" class="space-y-3"></div>
         </div>
@@ -90,153 +90,183 @@
     </main>
 
     <script>
-        // --- 完整题库 (22题) ---
         const questions = [
             { text: "今早有语文/英语早读，此时你的状态是？", options: [
                 { text: "提前一天预习好所有早读内容，从容入座等待发卷", delta: { AC: 2.0, R: 0.5 } },
                 { text: "踩点进门并和邻座打个招呼", delta: { S: 1.0, R: 0.5 } },
-                { text: "7:50刷新在教室抽走一张空白早读条/根本不出现", delta: { AC: -2.0, R: -1.5, CM: -1.0 } }
+                { text: "7:50刷新在教室抽走一张空白早读条/根本不出现", delta: { AC: -2.0, R: -1.5, CM: -1.0 } },
+                { text: "提前一天偷走早读条", delta: { AC: -0.5, R: -1.5 }, setFlags: { emperor1: true } }
             ]},
             { text: "听完一上午课，终于到了午休时间，你会？", options: [
                 { text: "准点干饭，人是铁饭是钢", delta: { Ath: 1.0 } },
+                { text: "焦虑下午的物理小测，直接skip lunch临时抱佛脚", delta: { ES: -1.0, AC: 0.5 } },
                 { text: "边吃边和搭子大谈压轴题思路", delta: { AC: 1.5 } },
-                { text: "焦虑下午的物理小测，直接skip lunch临时抱佛脚", delta: { ES: -1.0, AC: 0.5 } }
+                { text: "抓紧一分一秒和搭子畅聊新听来的八卦，几人不亦乐乎", delta: { S: 0.5, R: -0.5 }, setFlags: { daba1: true } },
+                { text: "我选择skip lunch睡觉zzZ", delta: {}, setFlags: { sleep1: true } }
             ]},
             { text: "一掏兜发现校园卡又丢了，你的反应是？", options: [
                 { text: "冷静回想路径并起身复盘寻找", delta: { CM: 1.5, ES: 1.0 } },
-                { text: "瞬间焦虑，觉得今天干什么都不顺", delta: { ES: -2.5, CM: -0.5 } },
-                { text: "习惯了，直接熟练地去补办", delta: { CM: -2.0, L: -1.0 } }
+                { text: "以为在兜里其实落在食堂，坐等好心人送回", delta: { L: 1.0, CM: -1.0 } },
+                { text: "习惯了，直接熟练地去补办", delta: { CM: -2.0, L: -1.0 } },
+                { text: "瞬间焦虑，觉得今天干什么都不顺", delta: { ES: -2.5, CM: -0.5 } }
             ]},
             { text: "下午4:30的黄金时段，你会选择？", options: [
-                { text: "操场球场体育馆，足球篮球羽毛球……", delta: { Ath: 2.0, S: 0.5 } },
                 { text: "待在教室死磕那道导数大题", delta: { AC: 2.0 } },
-                { text: "瘫在远翥楼海洋球池放空，或细嗅蔷薇搞搞创作", delta: { Cr: 2.0, ES: 1.0 } }
+                { text: "瘫在远翥楼海洋球池放空，或细嗅蔷薇搞搞创作", delta: { Cr: 2.0, ES: 1.0 } },
+                { text: "操场球场体育馆，足球篮球羽毛球……", delta: { Ath: 2.0, S: 0.5 } },
+                { text: "我最期待的社团活动！", delta: { S: 1.0, Cr: 0.5 } },
+                { text: "我选择补觉zzZ", delta: {}, setFlags: { sleep2: true } }
             ]},
             { text: "晚自习时，你的状态是？", options: [
+                { text: "偷偷刷手机或看闲书", delta: { R: -2.0, AC: -1.0 } },
                 { text: "高度专注，四小时心流弹指一挥间", delta: { AC: 1.5, CM: 1.0 } },
-                { text: "看心情，状态不好时不如出门遛遛弯", delta: { AC: -0.5, S: 0.5 } },
-                { text: "偷偷刷手机或看闲书", delta: { R: -2.0, AC: -1.0 } }
+                { text: "表面疯狂写字，实则脑内开演唱会", delta: { Cr: 1.0, AC: -0.5 } },
+                { text: "看心情，状态不好时不如出门遛遛弯", delta: { AC: -0.5, S: 0.5 } }
             ]},
             { text: "一年一度的红窗汇来临，你的角色是？", options: [
+                { text: "大逛特逛，大买特买，大玩特玩", delta: { S: 1.0, AC: -0.5 } },
                 { text: "统筹全局的幕后策划", delta: { S: 2.0, CM: 1.0 } },
                 { text: "金牌摊主，热卖榜第一名，摊位前水泄不通", delta: { Cr: 2.0, Ch: 0.5 } },
-                { text: "大逛特逛，大买特买，大玩特玩", delta: { S: 1.0,AC:-0.5 } }
+                { text: "什么红窗汇，刷题启动！", delta: { AC: 1.0, AR: 0.5 } }
             ]},
             { text: "海淀区最好的高中是？", options: [
                 { text: "BNDS YYDS", delta: {} },
-                { text: "这个嘛……", delta: { traitor: true } }
+                { text: "这个嘛……", delta: {}, setFlags: { isTraitor: true } },
+                { text: "那必然是隔壁...", delta: {}, setFlags: { isTraitor: true } },
+                { text: "啊？我只知道人大附", delta: {}, setFlags: { isTraitor: true } }
             ]},
             { text: "你如何评价自己的成绩雷达图？", options: [
+                { text: "一角如刀锋般尖锐，一侧如奶油般化开……", delta: { AR: -1.0, AC: 1.5 }, setFlags: { preventJuanWang: true } },
                 { text: "你可曾见过满格的苯环？", delta: { AR: 2.0 } },
-                // 新增一票否决逻辑：preventJuanWang: true
-                { text: "一角如刀锋般尖锐，一侧如奶油般化开……", delta: { AR: -1.0, AC: 1.5, preventJuanWang: true } },
                 { text: "在拓扑学意义上，我也是六边形战士……", delta: { AR: -1.5, AC: -1.5 } }
             ]},
             { text: "自习课45分钟过去，眼前的解析几何大题依旧混乱得如同要挣扎着长出血肉，此时你会？", options: [
+                { text: "直接去办公室抓个老师问到底", delta: { S: 1.0, AC: 1.0 } },
+                { text: "战术跳过，下一道更乖", delta: { CM: 1.0 , AC: -0.5 } },
                 { text: "晚饭取消！还有我解不出来的题？", delta: { ES: 1.5, AC: 1.0 } },
-                { text: "当场爆炸，想撕卷子，跑进厕所哞哞哭……", delta: { ES: -2.5 } },
-                { text: "战术跳过，下一道更乖。", delta: { CM: 1.0 } }
+                { text: "当场爆炸，想撕卷子，跑进厕所哞哞哭……", delta: { ES: -2.5 } }
             ]},
-            { text: "选课筹码博弈，你的策略是？", options: [
+            { text: "方圆星选课博弈，你的策略是？", options: [
+                { text: "梭哈最热门课，全凭直觉", delta: { L: 0.5, CM: -1.5 } },
                 { text: "黑箱博弈不打整数，把50改成52……", delta: { CM: 2.0, L: -1.0 } },
-                { text: "听天由命，随手一投，结果全中", delta: { L: 2.0, CM: -0.5 } },
-                { text: "梭哈最热门课，全凭直觉", delta: { L: 0.5, CM: -1.5 } }
+                { text: "听天由命，随手一投，结果全中", delta: { L: 2.0, CM: -0.5 } }
             ]},
             { text: "食堂窗口最后一份红烧肉…...", options: [
                 { text: "我总是能刚好买到最后一勺", delta: { L: 2.0 } },
-                { text: "总是到我刚好卖完", delta: { L: -2.0, ES: -1.0 } },
-                { text: "我跑得够快抢到了", delta: { Ath: 2.0 } }
+                { text: "无所谓，我去便利店买关东煮", delta: { ES: 1.0 } },
+                { text: "我跑得够快抢到了", delta: { Ath: 2.0 } },
+                { text: "总是到我刚好卖完", delta: { L: -2.0, ES: -1.0 } }
             ]},
             { text: "社团招新抽奖现场，你是？", options: [
+                { text: "在台上当抽奖主持人", delta: { S: 1.5, Ch: 1.0 } },
+                { text: "带了一兜子“谢谢参与”走了", delta: { L: -0.5, CM: 0.5 } },
                 { text: "真的中了限量版周边", delta: { L: 2.0 } },
-                { text: "低头刷题，不参与喧嚣", delta: { AC: 1.5, L: -1.0 } },
-                { text: "没中奖但在地上捡到钱", delta: { L: 1.5, CM: 0.5 } }
+                { text: "低头刷题，不参与喧嚣", delta: { AC: 1.5, L: -1.0 } }
             ]},
             { text: "偶遇查手机的老师，你会？", options: [
+                { text: "眼神躲避，原地消失", delta: { R: -2.0, CM: 1.0 } },
                 { text: "根本不带手机来学校", delta: { R: 2.0, AC: 1.0 } },
-                { text: "和老师很熟，自如打招呼", delta: { S: 1.5, Ch: 1.0 } },
-                { text: "眼神躲避，原地消失", delta: { R: -2.0, CM: 1.0 } }
+                { text: "和老师很熟，自如打招呼", delta: { S: 1.5, Ch: 1.0 }, setFlags: { emperor2: true } },
+		{ text: "根本不可能偶遇，全学校都是我的眼线", delta: { S: 0.5, R: -0.5 }, setFlags: { daba2: true } }
             ]},
             { text: "关于被开“行圆条”这件事...…", options: [
+                { text: "和老师据理力争，最后成功撤销", delta: { CM: 1.5, S: 1.0 } },
+                { text: "灵魂质问：老师你咋就抓我？", delta: { R: -1.5, ES: -1.5 } },
                 { text: "从未被开，我是遵规守纪标兵", delta: { R: 3.0, AC: 1.0 } },
-                { text: "乖乖签字，自认倒霉", delta: { ES: 1.0, R: 0.5 } },
-                { text: "灵魂质问：老师你咋就抓我？", delta: { R: -1.5, ES: -1.5 } }
+                { text: "乖乖签字，自认倒霉", delta: { ES: 1.0, R: 0.5 } }
             ]},
             { text: "晚自习偷偷吃零食，你是？", options: [
+                { text: "一圈人共享，小声畅聊八卦", delta: { S: 1.5, R: -1.5 }, setFlags: { daba3: true } },
                 { text: "绝对不吃，教室是学习的地方", delta: { R: 1.5, AC: 1.0 } },
-                { text: "享受违规的肾上腺素感", delta: { R: -1.0, CM: 0.5 } },
-                { text: "全桌共享，其乐融融", delta: { S: 1.5, R: -1.5 } }
+                { text: "享受违规的肾上腺素感", delta: { R: -1.0, CM: 0.5 } }
             ]},
             { text: "储物柜里多了一盒无名牛奶？", options: [
+                { text: "以为放错，直接拆开喝掉", delta: { Ch: 0.5, CM: -2.0 } },
+                { text: "四处打听是谁送的，势必找出恩人", delta: { S: 1.0, CM: 1.0 } },
                 { text: "上交公家，寻找失主", delta: { R: 1.5, Ch: -1.5 } },
-                { text: "暗暗享受被暗恋感", delta: { Ch: 2.5, S: 1.0 } },
-                { text: "以为放错，直接拆开喝掉", delta: { Ch: 0.5, CM: -2.0 } }
+                { text: "暗暗享受被暗恋感", delta: { Ch: 2.5, S: 1.0 } }
             ]},
             { text: "有不认识的人突然来找你...", options: [
-                { text: "“要咨询我昨天的压轴题？”", delta: { AC: 2.0, AR: 1.0 } },
                 { text: "“我的魅力依旧如此之大？”", delta: { Ch: 2.5, S: 1.0 } },
-                { text: "“难道又是捡到我卡的？”", delta: { CM: -2.5, Ch: 0.5 } }
+                { text: "（警觉）又有什么新瓜？", delta: { S: 0.5 }, setFlags: { daba4: true } },
+                { text: "“难道又是捡到我卡的？”", delta: { CM: -2.5, Ch: 0.5 } },
+                { text: "“要咨询我昨天的压轴题？”", delta: { AC: 2.0, AR: 1.0 } }
             ]},
             { text: "班级合照站位，你是？", options: [
+                { text: "站在老师旁边疯狂比剪刀手", delta: { R: 0.5, S: 1.0 } },
                 { text: "极力隐身，躲在角落", delta: { Ch: -1.5, S: -1.5 } },
-                { text: "自信从容站在C位，摆好最完美的pose", delta: { Ch: 2.0, S: 1.5 } },
-                { text: "指挥大家站位，绝佳构图", delta: { Cr: 1.5, S: 1.0 } }
+                { text: "指挥大家站位，绝佳构图", delta: { Cr: 1.5, S: 1.0 } },
+                { text: "自信从容站在C位，摆好最完美的pose", delta: { Ch: 2.0, S: 1.5 } }
             ]},
             { text: "狂欢节当天，你选择？", options: [
+                { text: "跟在校长后面蹭镜头", delta: { S: 1.5, L: 0.5 } },
                 { text: "逃避人群去刷题", delta: { AC: 2.0, S: -2.0 } },
-                { text: "精心出Cos并疯狂集邮", delta: { Cr: 2.5, Ch: 2.0, S: 1.0 } },
-                { text: "和一群朋友约狼人杀", delta: { S: 2.0, L: 1.0 } }
+                { text: "和一群朋友约狼人杀", delta: { S: 2.0, L: 1.0 } },
+                { text: "精心出Cos并疯狂集邮", delta: { Cr: 2.5, Ch: 2.0, S: 1.0 } }
             ]},
             { text: "你最喜欢的校园咖啡厅是？", options: [
+                { text: "远七空中花园，边喝咖啡边敲电脑/学习", delta: { AC: 1.5, ES: 1.0 } },
+                { text: "咖啡厅？我不喝咖啡，我只去小卖部", delta: { Ath: 0.5, ES: 0.5 } },
                 { text: "图书馆咖啡厅，社团活动圣地", delta: { S: 1.5, Cr: 1.0 } },
-                { text: "远翥楼轻食咖啡厅，和朋友边聊边品尝饮料", delta: { S: 2.0, Ch: 1.0 } },
-                { text: "远七空中花园，边喝咖啡边敲电脑/学习", delta: { AC: 1.5, ES: 1.0 } }
+                { text: "远翥楼轻食咖啡厅，和朋友边聊边品尝饮料", delta: { S: 2.0, Ch: 1.0 } }
             ]},
             { text: "你的自习秘密基地？", options: [
-                { text: "导师教室/图书馆阅览室，安静刷题", delta: { AC: 2.0, R: 1.0 } },
+                { text: "某某老师的工位", delta: { S: 1.0, R: -0.5 }, setFlags: { emperor3: true } },
                 { text: "咖啡厅，和伙伴边聊边学", delta: { S: 1.5, AR: 0.5 } },
+                { text: "导师教室/图书馆阅览室，安静刷题", delta: { AC: 2.0, R: 1.0 } },
                 { text: "操场看台，边看球赛边背书", delta: { Ath: 1.5, AR: 0.5 } }
             ]},
-            { text: "你最喜欢的学科教室是？", options: [
-                { text: "语文教室，黑板上有文艺涂鸦，书架上满是古今中外典籍", delta: { Cr: 2.0, AR: 0.5 } },
+            { text: "你最喜欢的教学楼空间是？", options: [
+                { text: "文科教室，黑板上有文艺涂鸦，书架上满是古今中外典籍", delta: { Cr: 2.0, AR: 0.5 } },
+                { text: "比起教室，我选择呆在厕所小隔间放空……", delta: { S: -1.0 } },
                 { text: "理科教室，讲台边几何模型、球棍模型，侧黑板上写满今日挑战问题", delta: { AC: 2.0, AR: 1.0 } },
                 { text: "比起教室，还是中厅沙发更吸引我", delta: { S: 2.0, Ch: 1.0 } }
             ]}
         ];
 
-         // --- 核心人格库 ---
+        // --- 核心人格库 ---
         const personalities = [
-            { name: "卷王", tag: "做题启动！", desc: "专注度极高，每天学习 25 小时。\n“我遇到过很多人，但比我更卷的还没出生。”", dims: { AR:5, AC:5, S:1, R:3.5, Cr:2.5, ES:4, L:2.5, CM:4.5, Ch:1.5, Ath:2.5 } },
-            { name: "偏科战神", tag: "竞赛佬/单科无敌", desc: "一科夯爆了，另一科拉夯了。\n“别提英语，咱先说说数学……”", dims: { AR:1, AC:4.5, S:2.5, R:2.5, Cr:2.5, ES:3, L:2.5, CM:3.5, Ch:2, Ath:2.5 } },
-            { name: "远翥楼的\n海洋球池", tag: "唱跳rap篮球 斜杠青年", desc: "像球池一样五彩斑斓，多才多艺、魅力四射。\n“草地音乐节、校园歌手大赛、狂欢节开幕式……你在哪里认识我的？”", dims: { AR:2.5, AC:2, S:4.5, R:2.5, Cr:5, ES:3, L:2.5, CM:3, Ch:4.5, Ath:2.5 } },
-            { name: "容光楼的厕所", tag: "易碎 高爆发", desc: "遇到困难就像容光楼的厕所一样，一言不合就爆炸。\n“什么破题，我跟你爆了！！”", dims: { AR:3, AC:3, S:2.5, R:2.5, Cr:2.5, ES:0.5, L:2.5, CM:2, Ch:2.5, Ath:2.5 } },
-            { name: "红窗汇大鳄", tag: "商业头脑 创意 社团主心骨", desc: "社团活动狂热分子，创意爆棚，天生的产品经理。\n“今年销售额第一能不能做到？”", dims: { AR:3, AC:2.5, S:4.5, R:3, Cr:4.5, ES:3.5, L:3, CM:4.5, Ch:3.5, Ath:2.5 } },
-            { name: "无形的大手", tag: "权力感 策划力 领导力", desc: "活动幕后的大 BOSS，非常擅长组织协调和规则制定。\n“表彰大会、红窗汇、文化日，我经手的活动不可能出纰漏。”", dims: { AR:3.5, AC:3, S:4.5, R:4.5, Cr:4, ES:4.5, L:3, CM:4.5, Ch:3.5, Ath:2.5 } },
+            { name: "卷王", tag: "孤寂、极度刻苦", desc: "专注度极高，每天学习 25 小时。\n“我遇到过很多人，但比我更卷的还没出生。”", dims: { AR:5, AC:5, S:1, R:3.5, Cr:2.5, ES:4, L:2.5, CM:4.5, Ch:1.5, Ath:2.5 } },
+            { name: "偏科战神", tag: "智力溢出、非人类", desc: "一科夯爆了，另一科拉夯了。\n“别提英语，咱先说说数学……”", dims: { AR:1, AC:4.5, S:2.5, R:2.5, Cr:2.5, ES:3, L:2.5, CM:3.5, Ch:2, Ath:2.5 } },
+            { name: "远翥楼海洋球池", tag: "艺术、多才多艺", desc: "像球池一样五彩斑斓，多才多艺、魅力四射。\n“草地音乐节、校园歌手大赛、狂欢节开幕式……你在哪里认识我的？”", dims: { AR:2.5, AC:2, S:4.5, R:2.5, Cr:5, ES:3, L:2.5, CM:3, Ch:4.5, Ath:2.5 } },
+            { name: "容光楼的厕所", tag: "易碎、高爆发", desc: "遇到困难就像容光楼的厕所一样，一言不合就爆炸。\n“什么破题，我跟你爆了！！”", dims: { AR:3, AC:3, S:2.5, R:2.5, Cr:2.5, ES:0.5, L:2.5, CM:2, Ch:2.5, Ath:2.5 } },
+            { name: "红窗汇大鳄", tag: "商业头脑、创意", desc: "社团活动狂热分子，创意爆棚，天生的产品经理。\n“今年销售额第一能不能做到？”", dims: { AR:3, AC:2.5, S:4.5, R:3, Cr:4.5, ES:3.5, L:3, CM:4.5, Ch:3.5, Ath:2.5 } },
+            { name: "无形的大手", tag: "权力感、策划力", desc: "活动幕后的大 BOSS，擅长组织协调和规则制定。\n“我经手的活动不可能出纰漏。”", dims: { AR:3.5, AC:3, S:4.5, R:4.5, Cr:4, ES:4.5, L:3, CM:4.5, Ch:3.5, Ath:2.5 } },
             { name: "情圣", tag: "桃花指数爆表", desc: "“高中就是用来谈恋爱的！不谈恋爱算我亏了。”", dims: { AR:2.5, AC:2.5, S:4, R:2.5, Cr:3.5, ES:3, L:2.5, CM:2.5, Ch:5, Ath:2.5 } },
-            { name: "狛枝凪斗", tag: "超高校级的幸运", desc: '博弈大赢家，各路抽奖一击必中，我听见强运的回响。\n"人生真是易如反掌啊。"', dims: { AR:2.5, AC:2.5, S:3, R:2.5, Cr:2.5, ES:3.5, L:5, CM:3, Ch:3, Ath:2.5 } },
-            { name: "行圆分负债者", tag: "低唤醒 反叛", desc: '升旗仪式失踪人口，早八永远在梦游，签行圆条如流水。\n"行圆分？留着有啥用？"', dims: { AR:2, AC:1.5, S:3, R:0.5, Cr:3, ES:3, L:2.5, CM:2, Ch:2.5, Ath:2.5 } },
-            { name: "小迷糊", tag: "混乱秩序 纯真", desc: "不是在丢卡就是在去补办卡的路上，不过稀里糊涂过日子也挺爽的嘛。“昨天老师留作业了？”", dims: { AR:2.5, AC:2.5, S:3, R:2.5, Cr:2.5, ES:2.5, L:2.5, CM:0.5, Ch:3, Ath:2.5 } },
+            { name: "蛇喰梦子", tag: "100筹码、强运", desc: '博弈大赢家，各路抽奖一击必中。\n"人生真是易如反掌啊。"', dims: { AR:2.5, AC:2.5, S:3, R:2.5, Cr:2.5, ES:3.5, L:5, CM:3, Ch:3, Ath:2.5 } },
+            { name: "行圆分负债者", tag: "低唤醒、反叛", desc: '升旗仪式失踪人口，早八永远在梦游。\n"行圆分？留着有啥用？"', dims: { AR:2, AC:1.5, S:3, R:0.5, Cr:3, ES:3, L:2.5, CM:2, Ch:2.5, Ath:2.5 } },
+            { name: "小迷糊", tag: "混乱秩序、纯真", desc: "不是在丢卡就是在去补办卡的路上。\n“昨天老师留作业了？”", dims: { AR:2.5, AC:2.5, S:3, R:2.5, Cr:2.5, ES:2.5, L:2.5, CM:0.5, Ch:3, Ath:2.5 } },
             { name: "年级主任", tag: "行走的正道之光", desc: "永远遵规守纪，一直想劝导同学学习，莫非你是混入的年级主任？", dims: { AR:3.5, AC:3.5, S:2.5, R:5, Cr:2.5, ES:4.5, L:2.5, CM:4, Ch:2, Ath:2.5 } },
+            
+            { name: "皇帝", tag: "无法无天 手眼通天", desc: "和老师处成兄弟，把学校当成后花园。\n“龙心大悦，诸位爱卿平身。”", dims: { AR:2.5, AC:2.5, S:4.5, R:1.0, Cr:3.5, ES:4.5, L:3.5, CM:3.0, Ch:3.5, Ath:3.0 } },
+            { name: "村口大喇叭", tag: "情报头子 黑白通吃", desc: "小道消息无比灵通，方圆五百里所有的瓜全知道。\n“听说了吗？那个谁和那个谁……”", dims: { AR:2.5, AC:2.5, S:5.0, R:2.5, Cr:3.0, ES:3.5, L:3.0, CM:3.5, Ch:3.5, Ath:2.5 } },
+            { name: "不醒人士", tag: "睡神降临 随地入眠", desc: "早读睡觉，上课睡觉，午休睡觉，自习课还是睡觉……\n“呼……呼……下课了叫我。”", dims: { AR:1.5, AC:1.0, S:2.0, R:2.0, Cr:2.5, ES:4.0, L:3.0, CM:1.0, Ch:2.0, Ath:1.5 } },
+            { name: "黑社会", tag: "法外狂徒 规则破坏者", desc: "真正的无法无天，把学校完全玩成自己的地盘。\n“这块场子，我说了算。”", dims: { AR:1.0, AC:1.0, S:4.0, R:0.5, Cr:3.0, ES:3.5, L:3.0, CM:3.0, Ch:3.0, Ath:3.5 } },
+            
             { name: "入侵者", tag: "忠诚度危机", desc: "竟然说海淀区最好的高中不是 BNDS？你是哪个学校的？", dims: { AR:0, AC:0, S:0, R:0, Cr:0, ES:0, L:0, CM:0, Ch:0, Ath:0 } }
         ];
 
         // --- 核心执行逻辑与状态管理 ---
         let currentIdx = 0;
-        let isTraitor = false;
-        let preventJuanWang = false; // 新增：禁止被判定为卷王的标志
         let scores = { AR:2.5, AC:2.5, S:2.5, R:2.5, Cr:2.5, ES:2.5, L:2.5, CM:2.5, Ch:2.5, Ath:2.5 };
-        
-        // 历史记录栈，用于保存每一步的状态
+        let flags = {
+            isTraitor: false, preventJuanWang: false,
+            emperor1: false, emperor2: false, emperor3: false,
+            sleep1: false, sleep2: false,
+            daba1: false, daba2: false, daba3: false, daba4: false
+        };
         let historyStack = [];
 
         function startTest() { 
-            // 每次重新开始时，重置所有状态
             currentIdx = 0;
-            isTraitor = false;
-            preventJuanWang = false;
             scores = { AR:2.5, AC:2.5, S:2.5, R:2.5, Cr:2.5, ES:2.5, L:2.5, CM:2.5, Ch:2.5, Ath:2.5 };
+            flags = {
+                isTraitor: false, preventJuanWang: false,
+                emperor1: false, emperor2: false, emperor3: false,
+                sleep1: false, sleep2: false,
+                daba1: false, daba2: false, daba3: false, daba4: false
+            };
             historyStack = [];
-            
             switchScreen('screen-test'); 
             renderQuestion(); 
         }
@@ -246,33 +276,21 @@
             document.getElementById(id).classList.add('active');
         }
 
-        // 返回上一题逻辑
         function goBack() {
             if(currentIdx > 0 && historyStack.length > 0) {
-                // 弹出历史栈中的最后一次状态
                 const prevState = historyStack.pop();
-                
-                // 恢复分数和标记
                 scores = prevState.scores;
-                isTraitor = prevState.isTraitor;
-                preventJuanWang = prevState.preventJuanWang;
-                
-                // 退回上一题
+                flags = prevState.flags;
                 currentIdx--;
                 renderQuestion();
             }
         }
 
         function renderQuestion() {
-            // 控制返回按钮的显示与隐藏
             const backBtn = document.getElementById('back-btn');
-            if(currentIdx > 0) {
-                backBtn.classList.remove('invisible');
-            } else {
-                backBtn.classList.add('invisible');
-            }
+            if(currentIdx > 0) backBtn.classList.remove('invisible');
+            else backBtn.classList.add('invisible');
 
-            // 更新进度文本
             document.getElementById('progress-text').innerText = `${currentIdx + 1} / ${questions.length}`;
 
             const q = questions[currentIdx];
@@ -286,53 +304,59 @@
                 btn.className = "w-full py-4 px-6 bg-surface-container/50 hover:bg-primary hover:text-white rounded-2xl text-sm font-bold transition-all text-left shadow-sm";
                 btn.innerText = opt.text;
                 btn.onclick = () => {
-                    // 1. 在修改分数前，将当前状态深拷贝保存到历史栈中
                     historyStack.push({
                         scores: JSON.parse(JSON.stringify(scores)),
-                        isTraitor: isTraitor,
-                        preventJuanWang: preventJuanWang
+                        flags: JSON.parse(JSON.stringify(flags))
                     });
 
-                    // 2. 记录当前选项的影响
                     if(opt.delta) {
-                        if(opt.delta.traitor) isTraitor = true;
-                        // 触发防止成为“卷王”的特殊逻辑
-                        if(opt.delta.preventJuanWang) preventJuanWang = true;
-
                         for(let d in opt.delta) {
-                            if(d !== 'traitor' && d !== 'preventJuanWang') {
-                                scores[d] = Math.max(0, Math.min(5, scores[d] + opt.delta[d]));
-                            }
+                            scores[d] = Math.max(0, Math.min(5, scores[d] + opt.delta[d]));
+                        }
+                    }
+                    if(opt.setFlags) {
+                        for(let f in opt.setFlags) {
+                            flags[f] = opt.setFlags[f];
                         }
                     }
                     
-                    // 3. 进入下一题或结算
                     currentIdx++;
-                    if(currentIdx < questions.length) {
-                        renderQuestion();
-                    } else {
-                        calculateResult();
-                    }
+                    if(currentIdx < questions.length) renderQuestion();
+                    else calculateResult();
                 };
                 container.appendChild(btn);
             });
             
-            // 更新进度条
             document.getElementById('progress-bar').style.width = `${(currentIdx / questions.length) * 100}%`;
         }
 
         function calculateResult() {
             let res = null;
             
-            // 叛徒强制拦截
-            if(isTraitor) {
+            // 阶段一：纯强逻辑判定
+            if (flags.isTraitor) {
                 res = personalities.find(p => p.name === "入侵者");
-            } else {
+            } 
+            else if (flags.emperor1 && flags.emperor2 && flags.emperor3 && scores.R < 2.0) {
+                res = personalities.find(p => p.name === "皇帝");
+            } 
+            else if (flags.daba1 && flags.daba2 && flags.daba3 && flags.daba4) {
+                res = personalities.find(p => p.name === "村口大喇叭");
+            } 
+            else if (flags.sleep1 && flags.sleep2) {
+                res = personalities.find(p => p.name === "不醒人士");
+            } 
+            else if (scores.R <= 1.0 && scores.AR <= 2.0 && scores.AC <= 2.0) {
+                res = personalities.find(p => p.name === "黑社会");
+            } 
+            // 阶段二：常规距离计算
+            else {
                 let minDistance = Infinity;
+                const specialNames = ["入侵者", "村口大喇叭", "皇帝", "不醒人士", "黑社会"];
+                
                 personalities.forEach(p => { 
-                    if(p.name === "入侵者") return; 
-                    // 新增一票否决逻辑：如果命中特殊标记，则强行跳过“卷王”的匹配
-                    if(preventJuanWang && p.name === "卷王") return;
+                    if (specialNames.includes(p.name)) return; 
+                    if (flags.preventJuanWang && p.name === "卷王") return; 
                     
                     let distance = 0; 
                     for(let k in p.dims) {
@@ -344,7 +368,6 @@
                     } 
                 });
                 
-                // 放宽到 16，不再动不动就变龙娃
                 if(minDistance > 16) {
                     res = { 
                         name: "龙娃", 
