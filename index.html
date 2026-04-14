@@ -101,47 +101,52 @@
                 { text: "提前一天预习好所有早读内容，从容入座等待发卷", delta: { AC: 2.0, R: 0.5 } },
                 { text: "踩点进门并和邻座打个招呼", delta: { S: 1.0, R: 0.5 } },
                 { text: "7:50刷新在教室抽走一张空白早读条/根本不出现", delta: { AC: -2.0, R: -1.5, CM: -1.0 } },
-                { text: "提前一天偷走早读条", delta: { AC: -0.5, R: -1.5 }, setFlags: { emperor1: true } }
+                { text: "提前一天偷走早读条", delta: { AC: -0.5, R: -1.5 }, setFlags: { emperor1: true } },
+                { text: "选不出，skip" }
             ]},
             { text: "听完一上午课，终于到了午休时间，你会？", options: [
                 { text: "准点干饭，人是铁饭是钢", delta: { Ath: 1.0 } },
                 { text: "边吃边和搭子大谈压轴题思路", delta: { AC: 1.5 } },
                 { text: "焦虑下午的物理小测，直接skip lunch临时抱佛脚", delta: { ES: -1.0, AC: 0.5 } },
                 { text: "抓紧一分一秒和搭子畅聊新听来的八卦", delta: { S: 0.5, R: -0.5 }, setFlags: { daba1: true } },
-                { text: "我选择skip lunch睡觉zzZ", delta: {}, setFlags: { sleep1: true } }
+                { text: "我选择skip lunch睡觉zzZ", delta: {}, setFlags: { sleep1: true } },
+                { text: "选不出，skip" }
             ]},
             { text: "一掏兜发现校园卡又丢了，你的反应是？", options: [
                 { text: "冷静回想路径并起身复盘寻找", delta: { CM: 1.5, ES: 1.0 } },
                 { text: "以为在兜里其实落在食堂，坐等好心人送回", delta: { L: 1.0, CM: -1.0 } },
                 { text: "习惯了，直接熟练地去补办", delta: { CM: -2.0, L: -1.0 } },
-                { text: "瞬间焦虑，觉得今天干什么都不顺", delta: { ES: -2.5, CM: -0.5 } }
+                { text: "瞬间焦虑，觉得今天干什么都不顺", delta: { ES: -2.5, CM: -0.5 } },
+                { text: "选不出，skip" }
             ]},
             { text: "下午4:30的黄金时段，你会选择？", options: [
                 { text: "待在教室死磕那道导数大题", delta: { AC: 2.0 } },
                 { text: "操场球场体育馆，足球篮球羽毛球……", delta: { Ath: 2.0, S: 0.5 } },
                 { text: "我最期待的社团活动！", delta: { S: 1.0, Cr: 0.5 } },
                 { text: "我选择补觉zzZ", delta: {}, setFlags: { sleep2: true } },
-                // 新增电竞碎片1
-                { text: "找个隐蔽的角落，启动原神/王者/瓦……", delta: { R: -0.5, CM: 0.5 }, setFlags: { esport1: true } }
+                { text: "找个隐蔽的角落，启动原神/王者/第五人格……", delta: { R: -0.5, AC: -0.25 }, setFlags: { esport1: true } },
+                { text: "选不出，skip" }
             ]},
             { text: "晚自习时，你的状态是？", options: [
                 { text: "偷偷刷手机或看闲书", delta: { R: -2.0, AC: -1.0 } },
                 { text: "高度专注，四小时心流弹指一挥间", delta: { AC: 1.5, CM: 1.0 } },
-                // 新增电竞碎片2
-                { text: "表面疯狂写字，实则桌斗里激烈团战", delta: { R: -1.5, AC: -1.0 }, setFlags: { esport2: true } },
-                { text: "看心情，状态不好时不如出门遛遛弯", delta: { AC: -0.5, S: 0.5 } }
+                { text: "表面疯狂写字，实则桌子下激烈团战", delta: { R: -1.5, AC: -1.0 }, setFlags: { esport2: true } },
+                { text: "看心情，状态不好时不如出门遛遛弯", delta: { AC: -0.5, S: 0.5 } },
+                { text: "选不出，skip" }
             ]},
             { text: "一年一度的红窗汇来临，你的角色是？", options: [
                 { text: "大逛特逛，大买特买，大玩特玩", delta: { S: 1.0, AC: -0.5 } },
                 { text: "统筹全局的幕后策划", delta: { S: 2.0, CM: 1.0 } },
                 { text: "金牌摊主，热卖榜第一名，摊位前水泄不通", delta: { Cr: 2.0, Ch: 0.5 } },
-                { text: "什么红窗汇，刷题启动！", delta: { AC: 1.0, AR: 0.5 } }
+                { text: "什么红窗汇，刷题启动！", delta: { AC: 1.0, AR: 0.5 } },
+                { text: "选不出，skip" }
             ]},
             { text: "海淀区最好的高中是？", options: [
                 { text: "BNDS YYDS", delta: {} },
                 { text: "这个嘛……", delta: {}, setFlags: { isTraitor: true } },
                 { text: "那必然是隔壁...", delta: {}, setFlags: { isTraitor: true } },
-                { text: "啊？我只知道人大附", delta: {}, setFlags: { isTraitor: true } }
+                { text: "啊？我只知道人大附", delta: {}, setFlags: { isTraitor: true } },
+                { text: "选不出，skip" }
             ]},
             { text: "点开好分数刚好刷出成绩，你是？", options: [
                 { text: "偷偷搞到身边朋友的成绩", delta: { R:-1.0 } },
@@ -149,98 +154,113 @@
                 { text: "虽然考得很好但是大喊寄了寄了这次真寄了", delta: { S: 0.5 , AR: 0.5, R: -0.5 } },
                 { text: "对身边的朋友说：考这么高！别学了奆神", delta: { S: 0.5, R: -0.5 } },
                 { text: "乖乖的改错复盘答疑", delta: { AC: 1.0 } },
-                { text: "成绩算啥 我鸟都不鸟", delta:{ AR:-1.0, AC:-1.0, R:-1.0} }
+                { text: "成绩算啥 我鸟都不鸟", delta:{ AR:-1.0, AC:-1.0, R:-1.0} },
+                { text: "选不出，skip" }
             ]},
             { text: "你如何评价自己的成绩雷达图？", options: [
-                { text: "薛定谔的雷达图，取决于考哪科", delta: { L: 1.5 } },
                 { text: "一角如刀锋般尖锐，一侧如奶油般化开……", delta: { AR: -1.0, AC: 1.5 }, setFlags: { preventJuanWang: true } },
                 { text: "你可曾见过满格的苯环？", delta: { AR: 2.0 } },
-                { text: "在拓扑学意义上，我也是六边形战士……", delta: { AR: -1.5, AC: -1.5 } }
+                { text: "在拓扑学意义上，我也是六边形战士……", delta: { AR: -1.5, AC: -1.5 } },
+                { text: "选不出，skip" }
             ]},
             { text: "自习课45分钟过去，眼前的解析几何大题依旧混乱得如同要挣扎着长出血肉，此时你会？", options: [
                 { text: "直接去办公室抓个老师问到底", delta: { S: 1.0, AC: 1.0 } },
                 { text: "战术跳过，下一道更乖", delta: { CM: 1.0 , AC: -0.5 } },
                 { text: "晚饭取消！还有我解不出来的题？", delta: { ES: 1.5, AC: 1.0 } },
-                { text: "当场爆炸，想撕卷子，跑进厕所哞哞哭……", delta: { ES: -2.5 } }
+                { text: "当场爆炸，想撕卷子，跑进厕所哞哞哭……", delta: { ES: -2.5 } },
+                { text: "选不出，skip" }
             ]},
             { text: "方圆星选课博弈，你的策略是？", options: [
                 { text: "梭哈最热门课，全凭直觉", delta: { L: 0.5, CM: -1.5 } },
-                { text: "抄学霸的选课单", delta: { S: 1.0, CM: 0.5 } },
                 { text: "黑箱博弈不打整数，把50改成52……", delta: { CM: 2.0, L: -1.0 } },
                 { text: "听天由命，随手一投，结果全中", delta: { L: 2.0, CM: -0.5 } },
-                { text: "精打细算，这把稳了，结果中了0门", delta: { L: -1.0 } }
+                { text: "精打细算，这把稳了，结果中了0门", delta: { L: -1.0 } },
+                { text: "选不出，skip" }
             ]},
             { text: "食堂窗口最后一份红烧肉…...", options: [
                 { text: "我总是能刚好买到最后一勺", delta: { L: 2.0 } },
                 { text: "无所谓，我去便利店买关东煮", delta: { ES: 1.0 } },
                 { text: "我跑得够快抢到了", delta: { Ath: 2.0 } },
-                { text: "总是到我刚好卖完", delta: { L: -2.0, ES: -1.0 } }
+                { text: "总是到我刚好卖完", delta: { L: -2.0, ES: -1.0 } },
+                { text: "选不出，skip" }
             ]},
             { text: "社团招新抽奖现场，你是？", options: [
                 { text: "在台上当抽奖主持人", delta: { S: 1.5, Ch: 1.0 } },
                 { text: "带了一兜子“谢谢参与”走了", delta: { L: -0.5, CM: 0.5 } },
                 { text: "真的中了限量版周边", delta: { L: 2.0 } },
-                { text: "低头刷题，不参与喧嚣", delta: { AC: 1.5, L: -1.0 } }
+                { text: "低头刷题，不参与喧嚣", delta: { AC: 1.5, L: -1.0 } },
+                { text: "选不出，skip" }
             ]},
             { text: "偶遇查手机的老师，你会？", options: [
                 { text: "眼神躲避，原地消失", delta: { R: -2.0, CM: 1.0 } },
                 { text: "根本不带手机来学校", delta: { R: 2.0, AC: 1.0 } },
                 { text: "和老师很熟，自如打招呼", delta: { S: 1.5, Ch: 1.0 }, setFlags: { emperor2: true } },
-                { text: "根本不可能偶遇，全学校都是我的眼线", delta: { S: 0.5, R: -0.5 }, setFlags: { daba2: true } }
+                { text: "根本不可能偶遇，全学校都是我的眼线", delta: { S: 0.5, R: -0.5 }, setFlags: { daba2: true } },
+                { text: "选不出，skip" }
             ]},
             { text: "关于被开“行圆条”这件事...…", options: [
                 { text: "和老师据理力争，最后成功撤销", delta: { CM: 1.5, S: 1.0 } },
+                { text: "从未被开条，我是遵规守纪标兵", delta: { R: 3.0, AC: 1.0 } },
+                { text: "一直违纪，从未被抓，暗度陈仓我最在行", delta: { R: -1.5} },
+                { text: "乖乖签字，自认倒霉", delta: { ES: 1.0, R: 0.5 } },
                 { text: "灵魂质问：老师你咋就抓我？", delta: { R: -1.5, ES: -1.5 } },
-                { text: "从未被开，我是遵规守纪标兵", delta: { R: 3.0, AC: 1.0 } },
-                { text: "乖乖签字，自认倒霉", delta: { ES: 1.0, R: 0.5 } }
+                { text: "选不出，skip" }
             ]},
             { text: "晚自习偷偷吃零食，你是？", options: [
                 { text: "一圈人共享，小声畅聊八卦", delta: { S: 1.5, R: -1.5 }, setFlags: { daba3: true } },
                 { text: "绝对不吃，教室是学习的地方", delta: { R: 1.5, AC: 1.0 } },
-                { text: "享受违规的肾上腺素感", delta: { R: -1.0, CM: 0.5 } }
+                { text: "享受违规的肾上腺素感", delta: { R: -1.0, CM: 0.5 } },
+                { text: "选不出，skip" }
             ]},
             { text: "储物柜里多了一盒无名牛奶？", options: [
                 { text: "以为放错，刚好饿了，直接拆开喝掉", delta: { Ch: 0.5, CM: -2.0 } },
                 { text: "四处打听是谁送的，势必找出恩人", delta: { S: 1.0, CM: 1.0 } },
                 { text: "上交公家，寻找失主", delta: { R: 1.5, Ch: -1.5 } },
-                { text: "有人暗恋我？", delta: { Ch: 2.5, S: 1.0 } }
+                { text: "有人暗恋我？", delta: { Ch: 2.5, S: 1.0 } },
+                { text: "选不出，skip" }
             ]},
             { text: "有不认识的人突然来找你...", options: [
                 { text: "“我的魅力依旧如此之大？”", delta: { Ch: 2.5, S: 1.0 } },
                 { text: "（警觉）又有什么新瓜？", delta: { S: 0.5 }, setFlags: { daba4: true } },
                 { text: "“难道又是捡到我卡的？”", delta: { CM: -2.5, Ch: 0.5 } },
-                { text: "“要咨询我昨天的压轴题？”", delta: { AC: 2.0, AR: 1.0 } }
+                { text: "“要咨询我昨天的压轴题？”", delta: { AC: 2.0, AR: 1.0 } },
+                { text: "选不出，skip" }
             ]},
             { text: "班级合照站位，你是？", options: [
                 { text: "站在老师旁边疯狂比剪刀手", delta: { R: 0.5, S: 1.0 } },
                 { text: "极力隐身，躲在角落", delta: { Ch: -1.5, S: -1.5 } },
                 { text: "指挥大家站位，绝佳构图", delta: { Cr: 1.0, S: 1.0 } },
-                { text: "自信从容站在C位，摆好最完美的pose", delta: { Ch: 2.0, S: 1.5 } }
+                { text: "自信从容站在C位，摆好最完美的pose", delta: { Ch: 2.0, S: 1.5 } },
+                { text: "选不出，skip" }
             ]},
             { text: "狂欢节当天，你选择？", options: [
                 { text: "跟在校长后面蹭镜头", delta: { S: 1.5, L: 0.5 } },
                 { text: "逃避人群去刷题", delta: { AC: 2.0, S: -2.0 } },
                 { text: "精心出Cos并疯狂集邮", delta: { Cr: 1.5, Ch: 2.0, S: 1.0 } },
-                // 新增电竞碎片3
-                { text: "趁着没人管，赶紧在教室开黑上大分", delta: { R: -1.5, S: 1.0 }, setFlags: { esport3: true } }
+                { text: "趁着没人管，赶紧在教室开黑上大分", delta: { R: -1.5, S: 0.5 }, setFlags: { esport3: true } },
+                { text: "选不出，skip" }
             ]},
             { text: "你最喜欢的校园咖啡厅是？", options: [
                 { text: "远七空中花园，边喝咖啡边敲电脑/学习", delta: { AC: 1.5, ES: 1.0 } },
-                { text: "咖啡厅？我不喝咖啡，我只去小卖部", delta: { Ath: 0.5, ES: 0.5 } },
                 { text: "图书馆咖啡厅，社团活动圣地", delta: { S: 1.5, Cr: 1.0 } },
-                { text: "远翥楼轻食咖啡厅，和朋友边聊边品尝饮料", delta: { S: 2.0, Ch: 1.0 } }
+                { text: "远翥楼轻食咖啡厅，和朋友边聊边品尝饮料", delta: { S: 2.0, Ch: 1.0 } },
+                { text: "管他哪个，能打游戏的就是好咖啡厅……", delta: { R: -1.0, AC:-0.5 } },
+                { text: "选不出，skip" }
             ]},
             { text: "你的自习秘密基地？", options: [
                 { text: "咖啡厅，和伙伴边聊边学", delta: { S: 1.5, AR: 0.5 } },
                 { text: "导师教室/图书馆阅览室，安静刷题", delta: { AC: 2.0, R: 1.0 } },
                 { text: "操场看台，边看球赛边背书", delta: { Ath: 1.5, AR: 0.5 } },
-                { text: "某某老师的工位", delta: { S: 1.0, R: -0.5 }, setFlags: { emperor3: true } }
+                { text: "食堂也不是不可以自习！", delta: {AC: 1.0, Cr: 1.0} }
+                { text: "某某老师的工位", delta: { S: 1.0, R: -0.5 }, setFlags: { emperor3: true } },
+                { text: "选不出，skip" }
             ]},
             { text: "你最喜欢的教学楼空间是？", options: [
                 { text: "文科教室，黑板上有文艺涂鸦，书架上满是古今中外典籍", delta: { Cr: 1.5, AR: 0.5 } },
                 { text: "比起教室，我选择呆在厕所小隔间放空……", delta: { S: -1.0 } },
                 { text: "理科教室，讲台边几何模型、球棍模型，侧黑板上写满今日挑战问题", delta: { AC: 2.0, AR: 1.0 } },
-                { text: "比起教室，还是中厅沙发更吸引我", delta: { S: 2.0, Ch: 1.0 } }
+                { text: "比起教室，还是中厅沙发更吸引我", delta: { S: 2.0, Ch: 1.0 } },
+                { text: "选不出，skip" }
             ]}
         ];
 
