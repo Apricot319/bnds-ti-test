@@ -164,12 +164,12 @@
                 { text: "啊？我只知道人大附", delta: {}, setFlags: { isTraitor: true } },
                 { text: "选不出，skip" }
             ]},
-            { text: "点开好分数刚好刷出成绩，你是？", options: [
+            { text: "点开好分数刚好刷出成绩，你是？（不论成绩，只看心态）", options: [
+                { text: "“我简直是爱因斯坦再世！”", delta: { AR: 1.5, ES: 1.0 } },
+                { text: "静静坐在座位聆听自己破防的声音", delta: { ES : -0.5 } },
+                { text: "乖乖的改错复盘答疑", delta: { AC: 1.0 , ES :0.5} },
+                { text: "成绩算啥，我鸟都不鸟", delta:{ AR:-1.0, AC:-1.0, R:-1.0} },
                 { text: "偷偷搞到身边朋友的成绩", delta: { R:-1.0 } },
-                { text: "我草我简直太牛逼了", delta: { AR: 1.5, ES: 1.0 } },
-                { text: "对身边的朋友说：考这么高！别学了奆神", delta: { S: 0.5, R: -0.5 } },
-                { text: "乖乖的改错复盘答疑", delta: { AC: 1.0 } },
-                { text: "成绩算啥 我鸟都不鸟", delta:{ AR:-1.0, AC:-1.0, R:-1.0} },
                 { text: "选不出，skip" }
             ]},
             { text: "你如何评价自己的成绩雷达图？", options: [
@@ -211,6 +211,7 @@
                 { text: "根本不带手机来学校", delta: { R: 2.0, AC: 1.0 } },
                 { text: "和老师很熟，自如打招呼", delta: { S: 1.5, Ch: 1.0 }, setFlags: { emperor2: true } },
                 { text: "根本不可能偶遇，全学校都是我的眼线", delta: { S: 0.5, R: -0.5 }, setFlags: { daba2: true } },
+                { text: "被抓次数太多了，还在乎这一次？", delta: { R : -1.0 } }
                 { text: "选不出，skip" }
             ]},
             { text: "关于被开“行圆条”这件事...…", options: [
@@ -236,7 +237,7 @@
             ]},
             { text: "有不认识的人突然来找你...", options: [
                 { text: "“我的魅力依旧如此之大？”", delta: { Ch: 2.5, S: 1.0 } },
-                { text: "（警觉）又有什么新瓜？", delta: { S: 0.5 }, setFlags: { daba4: true } },
+                { text: "（警觉）又有什么新瓜可以吃？", delta: { S: 0.5 }, setFlags: { daba4: true } },
                 { text: "“难道又是捡到我卡的？”", delta: { CM: -2.5, Ch: 0.5 } },
                 { text: "“要咨询我昨天的压轴题？”", delta: { AC: 2.0, AR: 1.0 } },
                 { text: "选不出，skip" }
@@ -267,7 +268,7 @@
                 { text: "导师教室/图书馆阅览室，安静刷题", delta: { AC: 2.0, R: 1.0 } },
                 { text: "操场看台，边看球赛边背书", delta: { Ath: 1.5, AR: 0.5 } },
                 { text: "食堂也不是不可以自习！", delta: {AC: 1.0, Cr: 1.0} },
-                { text: "某某老师的工位", delta: { S: 1.0, R: -0.5 }, setFlags: { emperor3: true } },
+                { text: "某某老师的工位……", delta: { S: 1.0, R: -0.5 }, setFlags: { emperor3: true } },
                 { text: "选不出，skip" }
             ]},
             { text: "你最喜欢的教学楼空间是？", options: [
@@ -287,8 +288,8 @@
             { name: "远翥楼的\n海洋球池", tag: "艺术 自由 浪漫", desc: "像球池一样五彩斑斓，多才多艺、魅力四射。\n“草地音乐节、校园歌手大赛、狂欢节开幕式……你在哪里认识我的？”", dims: { AR:2.0, AC:1.5, S:4.5, R:2.0, Cr:5, ES:2.5, L:2.5, CM:2.5, Ch:4.0, Ath:2.5 } },
             
             { name: "容光楼的厕所", tag: "易碎玻璃 情绪爆发", desc: "遇到困难就像容光楼的厕所一样，一言不合就爆炸。\n“什么破题，我跟你爆了！！”", dims: { AR:3, AC:3, S:2.5, R:2.5, Cr:2.5, ES:0.5, L:2.5, CM:2, Ch:2.5, Ath:2.5 } },
-            { name: "红窗汇大鳄", tag: "创意 商业头脑 社团主心骨", desc: "社团活动狂热分子，创意爆棚，天生的产品经理。\n“物料筹划信手拈来，今年销售额第一能不能做到？”", dims: { AR:3, AC:2.5, S:4.5, R:3, Cr:4.5, ES:3.5, L:3, CM:4.5, Ch:3.5, Ath:2.5 } },
-            { name: "无形的大手", tag: "权力感 策划力 领导力", desc: "活动幕后的大 BOSS，擅长组织协调和规则制定。\n“表彰大会、文化日、草地音乐节，我经手的活动不可能出纰漏。”", dims: { AR:3.5, AC:3, S:4.5, R:4.5, Cr:4, ES:4.5, L:3, CM:4.5, Ch:3.5, Ath:2.5 } },
+            { name: "红窗汇大鳄", tag: "创意 商业头脑 社团主心骨", desc: "社团活动狂热分子，创意爆棚，天生的产品经理。\n（当然，如果你还没参与过，不如去试试！）\n“物料筹划信手拈来，今年销售额第一能不能做到？”", dims: { AR:3, AC:2.5, S:4.5, R:3, Cr:4.5, ES:3.5, L:3, CM:4.5, Ch:3.5, Ath:2.5 } },
+            { name: "无形的大手", tag: "权力感 策划力 领导力", desc: "活动幕后的大 BOSS，擅长组织协调和规则制定。\n（当然，如果你还没参与过，不如去试试！）\n“表彰大会、文化日、草地音乐节，我经手的活动不可能出纰漏。”", dims: { AR:3.5, AC:3, S:4.5, R:4.5, Cr:4, ES:4.5, L:3, CM:4.5, Ch:3.5, Ath:2.5 } },
             { name: "情圣", tag: "人见人爱 花见花开 车见……", desc: "“高中就是用来谈恋爱的！不谈恋爱算我亏了。”", dims: { AR:2.5, AC:2.5, S:4, R:2.5, Cr:3.5, ES:3, L:2.5, CM:2.5, Ch:5, Ath:2.5 } },
             { name: "狛枝凪斗", tag: "超高校级的幸运", desc: '方圆星博弈大赢家，各路抽奖一击必中。\n"人生，真是易如反掌啊。"', dims: { AR:2.5, AC:2.5, S:3, R:2.5, Cr:2.5, ES:3.5, L:5, CM:3, Ch:3, Ath:2.5 } },
             
@@ -361,7 +362,14 @@
             
             q.options.forEach(opt => {
                 const btn = document.createElement('button');
-                btn.className = "w-full py-4 px-6 bg-surface-container/50 hover:bg-primary hover:text-white rounded-2xl text-sm font-bold transition-all text-left shadow-sm";
+                
+                // 【核心修改：给 skip 键一套独立的弱化样式】
+                if (opt.text === "选不出，skip") {
+                    btn.className = "w-full py-2.5 px-6 bg-transparent text-on-surface/30 border border-dashed border-on-surface/20 hover:bg-surface-container hover:text-on-surface/60 rounded-xl text-xs font-semibold transition-all text-center mt-2";
+                } else {
+                    btn.className = "w-full py-4 px-6 bg-surface-container/50 hover:bg-primary hover:text-white rounded-2xl text-sm font-bold transition-all text-left shadow-sm";
+                }
+
                 btn.innerText = opt.text;
                 btn.onclick = () => {
                     historyStack.push({
